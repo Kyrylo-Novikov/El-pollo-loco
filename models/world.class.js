@@ -11,10 +11,18 @@ class World {
   // air = new Air();
   canvas;
   ctx;
-  constructor(canvas) {
+  keyboard;
+
+  constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
+    this.keyboard = keyboard;
     this.draw();
+    this.setWorld();
+  }
+
+  setWorld() {
+    this.character.world = this;
   }
 
   draw() {
@@ -23,8 +31,6 @@ class World {
     this.addObjectToMap(this.clouds);
     this.addToMap(this.character);
     this.addObjectToMap(this.enemies);
-
-    // this.addToMap(this.air);
 
     // draw() wird immer wieder aufgerufen
     let self = this;
