@@ -1,18 +1,12 @@
 class World {
   character = new Character();
-  enemies = [new Chicken(), new Chicken(), new Chicken()];
-  clouds = [new Cloud()];
-  backgroundObject = [
-    new BackgroundObject("img/5_background/layers/air.png", 0),
-    new BackgroundObject("img/5_background/layers/3_third_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/2_second_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 0),
-  ];
-  // air = new Air();
+  enemies = level1.enemies;
+  clouds = level1.clouds;
+  backgroundObject = level1.backgroundObject;
   canvas;
   ctx;
   keyboard;
-
+  camera_x = 0;
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -27,10 +21,14 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.backgroundObject);
     this.addObjectToMap(this.clouds);
     this.addToMap(this.character);
     this.addObjectToMap(this.enemies);
+
+    this.ctx.translate(-this.camera_x, 0);
 
     // draw() wird immer wieder aufgerufen
     let self = this;
@@ -46,6 +44,12 @@ class World {
   }
 
   addToMap(movebalObject) {
+    if (movebalObject.otherDirection) {
+      this.ctx.save();
+      this.ctx.translate(movebalObject.width, 0);
+      this.ctx.scale(-1, 1);
+      movebalObject.x = movebalObject.x * -1;
+    }
     this.ctx.drawImage(
       movebalObject.img,
       movebalObject.x,
@@ -53,5 +57,9 @@ class World {
       movebalObject.width,
       movebalObject.height
     );
+    if (movebalObject.otherDirection) {
+      movebalObject.x = movebalObject.x * -1;
+      this.ctx.restore();
+    }
   }
 }
