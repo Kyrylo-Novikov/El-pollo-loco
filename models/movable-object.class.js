@@ -10,6 +10,7 @@ class Movableobject {
   speed = 0.25;
   speedY = 0;
   acceleration = 3;
+  energy = 100;
 
   applyGravity() {
     setInterval(() => {
@@ -29,6 +30,29 @@ class Movableobject {
     this.img.src = path;
   }
 
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+
+  drawFrame(ctx) {
+    if (this instanceof Character || this instanceof Chicken) {
+      ctx.beginPath();
+      ctx.lineWidth = "4";
+      ctx.strokeStyle = "blue";
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
+  }
+
+  isColliding(movebalObject) {
+    return (
+      this.x + this.width > movebalObject.x &&
+      this.y + this.height > movebalObject.y &&
+      this.x < movebalObject.x + movebalObject.width &&
+      this.y < movebalObject.y + movebalObject.height
+    );
+  }
+
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
@@ -38,12 +62,10 @@ class Movableobject {
   }
 
   moveRight() {
-    console.log("Moving right");
+    this.x += this.speed;
   }
   moveLeft() {
-    setInterval(() => {
-      this.x -= this.speed;
-    }, 1000 / 30);
+    this.x -= this.speed;
   }
 
   playAnimation(images) {
@@ -51,5 +73,9 @@ class Movableobject {
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
+  }
+
+  jump() {
+    this.speedY = 30;
   }
 }
