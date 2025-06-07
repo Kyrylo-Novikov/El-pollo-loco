@@ -11,6 +11,13 @@ class Movableobject {
   speedY = 0;
   acceleration = 3;
   energy = 100;
+  offset = {
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  };
+  lastHit = 0;
 
   applyGravity() {
     setInterval(() => {
@@ -35,22 +42,53 @@ class Movableobject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof Endboss
+    ) {
       ctx.beginPath();
       ctx.lineWidth = "4";
       ctx.strokeStyle = "blue";
-      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.rect(
+        this.x + this.offset.left,
+        this.y + this.offset.top,
+        this.width - this.offset.right,
+        this.height - this.offset.bottom
+      );
       ctx.stroke();
     }
   }
 
   isColliding(movebalObject) {
     return (
-      this.x + this.width > movebalObject.x &&
-      this.y + this.height > movebalObject.y &&
-      this.x < movebalObject.x + movebalObject.width &&
-      this.y < movebalObject.y + movebalObject.height
+      this.x + this.width - this.offset.right >
+        movebalObject.x - movebalObject.offset.left &&
+      this.y + this.height - movebalObject.offset.bottom >
+        movebalObject.y + movebalObject.offset.top &&
+      this.x + this.offset.left <
+        movebalObject.x + movebalObject.width - movebalObject.offset.right &&
+      this.y + this.offset.top <
+        movebalObject.y + movebalObject.height - movebalObject.offset.bottom
     );
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
+  isHurt() {
+    let timepassed = new Date().getTime() - this.lastHit;
+    return timepassed < 1000;
+  }
+
+  isDead() {
+    return this.energy == 0;
   }
 
   loadImages(arr) {
