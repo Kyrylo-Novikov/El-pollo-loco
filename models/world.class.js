@@ -5,10 +5,17 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  statusBar = [];
+
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.statusBar = [
+      new StatusBar(10, 0, "health"),
+      new StatusBar(10, 50, "coin"),
+      new StatusBar(10, 100, "bottle"),
+    ];
     this.draw();
     this.setWorld();
     this.checkCollisions();
@@ -19,8 +26,7 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
-
-          console.log("ist collediert", this.character.energy);
+          this.statusBar[0].setPercentage(this.character.energy);
         }
       });
     }, 100);
@@ -38,6 +44,12 @@ class World {
     this.addObjectToMap(this.level.clouds);
     this.addToMap(this.character);
     this.addObjectToMap(this.level.enemies);
+    this.ctx.translate(-this.camera_x, 0);
+    // Space for fixed  objects --------
+    this.statusBar.forEach((bar) => {
+      this.addToMap(bar);
+    });
+    this.ctx.translate(this.camera_x, 0);
 
     this.ctx.translate(-this.camera_x, 0);
 

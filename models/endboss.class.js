@@ -4,7 +4,7 @@ class Endboss extends Movableobject {
   width = 280;
   offset = {
     top: 100,
-    left: 40,
+    left: 10,
     bottom: 130,
     right: 95,
   };
