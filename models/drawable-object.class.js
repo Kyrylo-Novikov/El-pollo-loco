@@ -12,6 +12,7 @@ class DrawableObject {
     bottom: 0,
     right: 0,
   };
+
   //   loadImage('img/test.png')
   loadImage(path) {
     this.img = new Image();

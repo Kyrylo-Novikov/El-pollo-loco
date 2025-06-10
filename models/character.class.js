@@ -10,6 +10,8 @@ class Character extends Movableobject {
     bottom: 130,
     right: 55,
   };
+  bottles = 100;
+  coin = 0;
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -81,6 +83,8 @@ class Character extends Movableobject {
       }
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
+      }
+      if (this.world.keyboard.D) {
       }
 
       this.world.camera_x = -this.x + 100;

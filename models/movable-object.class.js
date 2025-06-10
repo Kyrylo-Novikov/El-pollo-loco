@@ -4,7 +4,6 @@ class Movableobject extends DrawableObject {
   speedY = 0;
   acceleration = 3;
   energy = 100;
-
   lastHit = 0;
 
   applyGravity() {
@@ -17,7 +16,12 @@ class Movableobject extends DrawableObject {
   }
 
   isAboveGround() {
-    return this.y <= 190;
+    if (this instanceof ThrowableObject) {
+      // Throwable object
+      return true;
+    } else {
+      return this.y <= 190;
+    }
   }
 
   isColliding(movebalObject) {
