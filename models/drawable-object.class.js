@@ -33,19 +33,29 @@ class DrawableObject {
     if (
       this instanceof Character ||
       this instanceof Chicken ||
-      this instanceof Endboss
+      this instanceof Endboss ||
+      this instanceof Collectibles
     ) {
+      let hitbox = this.hitbox();
+      let x = hitbox.x;
+      let y = hitbox.y;
+      let width = hitbox.width;
+      let height = hitbox.height;
       ctx.beginPath();
       ctx.lineWidth = "4";
       ctx.strokeStyle = "blue";
-      ctx.rect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.width - this.offset.right,
-        this.height - this.offset.bottom
-      );
+      ctx.rect(x, y, width, height);
       ctx.stroke();
     }
+  }
+
+  hitbox() {
+    return {
+      x: this.x + this.offset.left,
+      y: this.y + this.offset.top,
+      width: this.width - this.offset.left - this.offset.right,
+      height: this.height - this.offset.top - this.offset.bottom,
+    };
   }
 
   constructor(parameters) {}

@@ -25,15 +25,13 @@ class Movableobject extends DrawableObject {
   }
 
   isColliding(movebalObject) {
+    let a = this.hitbox();
+    let b = movebalObject.hitbox();
     return (
-      this.x + this.width - this.offset.right >
-        movebalObject.x - movebalObject.offset.left &&
-      this.y + this.height - movebalObject.offset.bottom >
-        movebalObject.y + movebalObject.offset.top &&
-      this.x + this.offset.left <
-        movebalObject.x + movebalObject.width - movebalObject.offset.right &&
-      this.y + this.offset.top <
-        movebalObject.y + movebalObject.height - movebalObject.offset.bottom
+      a.x + a.width > b.x &&
+      a.y + a.height > b.y &&
+      a.x < b.x + b.width &&
+      a.y < b.y + b.height
     );
   }
 
@@ -44,6 +42,10 @@ class Movableobject extends DrawableObject {
     } else {
       this.lastHit = new Date().getTime();
     }
+  }
+
+  collect() {
+    console.log("etwas eingesammelt.");
   }
 
   isHurt() {

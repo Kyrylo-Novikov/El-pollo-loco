@@ -51,7 +51,6 @@ class StatusBar extends DrawableObject {
     this.percentage = percentage; // => 0 .....5
     let path = this.imgArray[this.imageIndex()];
     this.img = this.imageCache[path];
-    console.log([this.imageIndex()]);
   }
   imageIndex() {
     if (this.percentage == 100) {

@@ -25,6 +25,7 @@ class World {
   run() {
     setInterval(() => {
       //
+      this.checkCollecting();
       this.checkCollisions();
       this.checkThrowObject();
     }, 100);
@@ -35,6 +36,16 @@ class World {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar[0].setPercentage(this.character.energy);
+      }
+    });
+  }
+
+  checkCollecting() {
+    this.level.collectibles.forEach((collectibles) => {
+      if (this.character.isColliding(collectibles)) {
+        this.character.collect();
+        this.statusBar[1].setPercentage(this.character.coin);
+        // collect
       }
     });
   }
@@ -60,9 +71,12 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.backgroundObject);
+    this.addObjectToMap(this.level.collectibles);
     this.addObjectToMap(this.level.clouds);
+
     this.addToMap(this.character);
     this.addObjectToMap(this.level.enemies);
+
     this.addObjectToMap(this.throwableObject);
     this.ctx.translate(-this.camera_x, 0);
     // Space for fixed  objects --------

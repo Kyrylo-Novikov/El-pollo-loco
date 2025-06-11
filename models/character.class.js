@@ -4,14 +4,10 @@ class Character extends Movableobject {
   height = 240;
   width = 100;
   speed = 5;
-  offset = {
-    top: 120,
-    left: 22,
-    bottom: 130,
-    right: 55,
-  };
+  offset = {};
   bottles = 100;
   coin = 0;
+  collectibles = new Collectibles();
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -68,6 +64,12 @@ class Character extends Movableobject {
     super.loadImages(this.IMAGES_IDLE);
     super.loadImages(this.IMAGES_HURT);
     this.animate();
+    this.offset = {
+      top: 120,
+      left: 20,
+      bottom: 10,
+      right: 30,
+    };
     this.applyGravity();
   }
 

@@ -1,5 +1,6 @@
 const level1 = new Level(
   [new Chicken(), new Chicken(), new Chicken(), new Endboss()],
+
   [new Cloud()],
   [
     new BackgroundObject("img/5_background/layers/air.png", -719),
@@ -43,5 +44,13 @@ const level1 = new Level(
       "img/5_background/layers/1_first_layer/2.png",
       719 * 3
     ),
+  ],
+  [
+    new Collectibles("coin", 100, 100, 120, 120),
+    new Collectibles("coin", 200, 200, 120, 120),
+    new Collectibles("coin", 1200, 300, 120, 120),
+    new Collectibles("bottle", 400, 300, 120, 120),
+    new Collectibles("bottle", 500, 300, 120, 120),
+    new Collectibles("bottle", 1000, 300, 120, 120),
   ]
 );
