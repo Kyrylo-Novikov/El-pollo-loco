@@ -46,8 +46,10 @@ const level1 = new Level(
     ),
   ],
   [
-    new Collectibles("coin", 100, 100, 120, 120),
-    new Collectibles("coin", 200, 200, 120, 120),
+    new Collectibles("coin", 2000, 200, 120, 120),
+    new Collectibles("coin", 1700, 300, 120, 120),
+    new Collectibles("coin", 200, 100, 120, 120),
+    new Collectibles("coin", 400, 200, 120, 120),
     new Collectibles("coin", 1200, 300, 120, 120),
     new Collectibles("bottle", 400, 300, 120, 120),
     new Collectibles("bottle", 500, 300, 120, 120),

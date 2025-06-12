@@ -13,9 +13,9 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.statusBar = [
-      new StatusBar(10, 0, "health"),
-      new StatusBar(10, 40, "coin"),
-      new StatusBar(10, 80, "bottle"),
+      new StatusBar(10, 0, "health", 100),
+      new StatusBar(10, 40, "coin", 0),
+      new StatusBar(10, 80, "bottle", 100),
     ];
     this.draw();
     this.setWorld();
@@ -28,6 +28,8 @@ class World {
       this.checkCollecting();
       this.checkCollisions();
       this.checkThrowObject();
+      this.checkHitting();
+      this.removeTheowableObjects();
     }, 100);
   }
 
@@ -40,13 +42,42 @@ class World {
     });
   }
 
+  checkHitting() {
+    this.throwableObject.forEach((throwableObject) => {
+      this.level.enemies = this.level.enemies.filter((enemy) => {
+        if (throwableObject.isColliding(enemy)) {
+          enemy.hit();
+          throwableObject.splash();
+
+          if (enemy.energy <= 0) {
+            return false;
+          }
+          return true;
+        }
+        return true;
+      });
+    });
+  }
+
+  removeTheowableObjects() {
+    this.throwableObject = this.throwableObject.filter((o) => !o.consumed);
+  }
+
   checkCollecting() {
-    this.level.collectibles.forEach((collectibles) => {
+    this.level.collectibles = this.level.collectibles.filter((collectibles) => {
       if (this.character.isColliding(collectibles)) {
-        this.character.collect();
-        this.statusBar[1].setPercentage(this.character.coin);
-        // collect
+        if (collectibles.type === "coin") {
+          this.character.collect(collectibles);
+          this.statusBar[1].setPercentage(this.character.coin);
+          return false;
+        }
+        if (collectibles.type === "bottle" && this.character.bottles < 100) {
+          this.character.collect(collectibles);
+          this.statusBar[2].setPercentage(this.character.bottles);
+          return false;
+        }
       }
+      return true;
     });
   }
 
@@ -54,7 +85,8 @@ class World {
     if (this.keyboard.D && this.character.bottles > 0) {
       let bottle = new ThrowableObject(
         this.character.x + 30,
-        this.character.y + 100
+        this.character.y + 100,
+        this.character.otherDirection
       );
       this.throwableObject.push(bottle);
       this.character.bottles -= 20;

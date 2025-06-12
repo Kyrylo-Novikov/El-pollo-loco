@@ -15,6 +15,7 @@ class Collectibles extends DrawableObject {
 
   constructor(type, x, y, w, h) {
     super();
+    this.type = type;
     this.width = w;
     this.height = h;
     this.y = y;
@@ -38,6 +39,4 @@ class Collectibles extends DrawableObject {
       };
     }
   }
-
-  collect() {}
 }

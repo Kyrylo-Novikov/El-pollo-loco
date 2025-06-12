@@ -7,7 +7,7 @@ class Character extends Movableobject {
   offset = {};
   bottles = 100;
   coin = 0;
-  collectibles = new Collectibles();
+  // collectibles = new Collectibles();
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -72,6 +72,15 @@ class Character extends Movableobject {
     };
     this.applyGravity();
   }
+
+  // collect(collecteble) {
+  //   if (collecteble.type == "coin" && this.coin < 100) {
+  //     this.coin += 20;
+  //   }
+  //   if (collecteble.type == "bottle" && this.bottles < 100) {
+  //     this.bottles += 20;
+  //   }
+  // }
 
   animate() {
     const controlleInterval = setInterval(() => {

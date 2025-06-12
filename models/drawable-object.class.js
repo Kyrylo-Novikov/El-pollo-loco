@@ -34,7 +34,8 @@ class DrawableObject {
       this instanceof Character ||
       this instanceof Chicken ||
       this instanceof Endboss ||
-      this instanceof Collectibles
+      this instanceof Collectibles ||
+      this instanceof ThrowableObject
     ) {
       let hitbox = this.hitbox();
       let x = hitbox.x;

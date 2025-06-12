@@ -44,10 +44,6 @@ class Movableobject extends DrawableObject {
     }
   }
 
-  collect() {
-    console.log("etwas eingesammelt.");
-  }
-
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     return timepassed < 1000;
@@ -73,5 +69,14 @@ class Movableobject extends DrawableObject {
 
   jump() {
     this.speedY = 30;
+  }
+
+  collect(collecteble) {
+    if (collecteble.type == "coin" && this.coin < 100) {
+      this.coin += 20;
+    }
+    if (collecteble.type == "bottle" && this.bottles < 100) {
+      this.bottles += 20;
+    }
   }
 }
