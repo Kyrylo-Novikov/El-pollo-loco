@@ -12,6 +12,7 @@ class DrawableObject {
     bottom: 0,
     right: 0,
   };
+  otherDirection = false;
 
   //   loadImage('img/test.png')
   loadImage(path) {

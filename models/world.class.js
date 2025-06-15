@@ -1,14 +1,15 @@
 class World {
   character = new Character();
-  level = level1;
+  level;
   canvas;
   ctx;
   keyboard;
   camera_x = 0;
   statusBar = [];
   throwableObject = [];
+  state = "start";
 
-  constructor(canvas, keyboard) {
+  constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
@@ -17,9 +18,14 @@ class World {
       new StatusBar(10, 40, "coin", 0),
       new StatusBar(10, 80, "bottle", 100),
     ];
+    this.screen = {
+      start: new Screen("start"),
+      win: new Screen("win"),
+      lose: new Screen("lose"),
+    };
+    this.level = level;
     this.draw();
     this.setWorld();
-    this.run();
   }
 
   run() {
@@ -100,6 +106,22 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (this.state !== "playing") {
+      this.screen[this.state].draw(this.ctx);
+      requestAnimationFrame(() => this.draw());
+      return;
+    }
+    if (this.character.energy <= 0 && this.state === "playing") {
+      setTimeout(() => {
+        this.state = "lose";
+      }, 700);
+    }
+
+    if (this.character.x >= 2700) {
+      setTimeout(() => {
+        this.state = "win";
+      }, 500);
+    }
 
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.backgroundObject);

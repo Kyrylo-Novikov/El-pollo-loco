@@ -55,7 +55,7 @@ class ThrowableObject extends Movableobject {
 
   splash() {
     clearInterval(this.throwInterval);
-    // this.currentImage = 0;
+    this.currentImage = 0;
     this.speedY = 0;
     this.speedX = 0;
     this.acceleration = 0;

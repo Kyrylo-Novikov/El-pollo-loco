@@ -2,10 +2,24 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+let level;
+
 function init() {
   canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard);
+  level = level1();
+  world = new World(canvas, keyboard, level);
 }
+
+window.addEventListener("click", () => {
+  if (!world) return;
+
+  if (world.state === "start") {
+    world.state = "playing";
+    world.run();
+  } else if (world.state === "lose" || world.state === "win") {
+    init();
+  }
+});
 
 window.addEventListener("keydown", (event) => {
   if (event.code === "ArrowUp") {

@@ -7,7 +7,7 @@ class Character extends Movableobject {
   offset = {};
   bottles = 100;
   coin = 0;
-  // collectibles = new Collectibles();
+
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -73,15 +73,6 @@ class Character extends Movableobject {
     this.applyGravity();
   }
 
-  // collect(collecteble) {
-  //   if (collecteble.type == "coin" && this.coin < 100) {
-  //     this.coin += 20;
-  //   }
-  //   if (collecteble.type == "bottle" && this.bottles < 100) {
-  //     this.bottles += 20;
-  //   }
-  // }
-
   animate() {
     const controlleInterval = setInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -98,7 +89,17 @@ class Character extends Movableobject {
       if (this.world.keyboard.D) {
       }
 
-      this.world.camera_x = -this.x + 100;
+      /**
+       * this.world.camera_x = -2100 + 100; friert die camera ein
+       */
+      if (this.x >= 2100) {
+        this.world.camera_x = -2100 + 100;
+      } else {
+        /**
+         * this.world.camera_x = -this.x + 100; verschiebt die camera /hintergrund gegen die richtung des characters so wirkt es als ob die welt sich bewegt und nicht der character.
+         */
+        this.world.camera_x = -this.x + 100;
+      }
     }, 1000 / 120);
 
     const animationsInterval = setInterval(() => {
