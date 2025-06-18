@@ -9,7 +9,6 @@ class ThrowableObject extends Movableobject {
     bottom: 10,
     right: 15,
   };
-  // currentImage;
 
   IMAGE_BOTTLE_ROTATION = [
     "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
@@ -65,7 +64,7 @@ class ThrowableObject extends Movableobject {
         clearInterval(bottleHit);
         setTimeout(() => {
           this.consumed = true;
-        }, 200);
+        }, 50);
       }
     }, 1000 / 20);
   }

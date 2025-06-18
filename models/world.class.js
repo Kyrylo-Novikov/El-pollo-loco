@@ -26,6 +26,7 @@ class World {
     this.level = level;
     this.draw();
     this.setWorld();
+    this.setWorldEnemy();
   }
 
   run() {
@@ -50,23 +51,19 @@ class World {
 
   checkHitting() {
     this.throwableObject.forEach((throwableObject) => {
-      this.level.enemies = this.level.enemies.filter((enemy) => {
+      this.level.enemies.forEach((enemy) => {
         if (throwableObject.isColliding(enemy)) {
           enemy.hit();
           throwableObject.splash();
-
-          if (enemy.energy <= 0) {
-            return false;
-          }
-          return true;
         }
-        return true;
       });
     });
   }
 
   removeTheowableObjects() {
-    this.throwableObject = this.throwableObject.filter((o) => !o.consumed);
+    this.throwableObject = this.throwableObject.filter(
+      (bottle) => !bottle.consumed
+    );
   }
 
   checkCollecting() {
@@ -102,6 +99,12 @@ class World {
 
   setWorld() {
     this.character.world = this;
+  }
+
+  setWorldEnemy() {
+    this.level.enemies.forEach((enemy) => {
+      enemy.world = this;
+    });
   }
 
   draw() {
