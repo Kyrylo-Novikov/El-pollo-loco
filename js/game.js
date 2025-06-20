@@ -2,11 +2,9 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-let level;
-
 function init() {
   canvas = document.getElementById("canvas");
-  level = level1();
+  let level = level1();
   world = new World(canvas, keyboard, level);
 }
 

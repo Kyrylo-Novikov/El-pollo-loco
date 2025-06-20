@@ -30,14 +30,20 @@ class World {
   }
 
   run() {
+    this.spawnEnemies();
     setInterval(() => {
-      //
       this.checkCollecting();
       this.checkCollisions();
       this.checkThrowObject();
       this.checkHitting();
       this.removeTheowableObjects();
     }, 100);
+  }
+
+  spawnEnemies() {
+    this.level.enemies.forEach((e) => {
+      e.animate();
+    });
   }
 
   checkCollisions() {
@@ -55,6 +61,9 @@ class World {
         if (throwableObject.isColliding(enemy)) {
           enemy.hit();
           throwableObject.splash();
+          if (enemy instanceof Endboss) {
+            this.statusBar[3].setPercentage(enemy.energy);
+          }
         }
       });
     });
@@ -140,6 +149,7 @@ class World {
     this.statusBar.forEach((bar) => {
       this.addToMap(bar);
     });
+    // this.world.level.enemies. new StatusBar(200, 0, "boss", 100);
     this.ctx.translate(this.camera_x, 0);
 
     this.ctx.translate(-this.camera_x, 0);

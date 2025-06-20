@@ -12,6 +12,7 @@ class Endboss extends Movableobject {
   speed = 5;
   maxX = 2800;
   minX = 2000;
+  statusBar = new StatusBar(500, 10, "boss", 100);
 
   ENDBOSS_STATUS = {
     walking: [
@@ -58,14 +59,13 @@ class Endboss extends Movableobject {
     this.loadImages(this.ENDBOSS_STATUS.dead);
     this.loadImages(this.ENDBOSS_STATUS.hurt);
     this.loadImages(this.ENDBOSS_STATUS.walking);
-    // this.status = "idle";
     this.alertStart = true;
     this.walkingStart = false;
     this.attackStart = false;
     this.hurtStart = false;
     this.deadStart = false;
     this.x = 2500;
-    this.animate();
+    // this.animate();
   }
 
   animate() {
@@ -77,26 +77,25 @@ class Endboss extends Movableobject {
         this.hurtStart = false;
         this.alertStart = false;
         this.currentImage = 0;
-      } else if (this.hurteStart) {
-        /**schadens animation */
-      } else if (this.x - this.world.character.x < 50) {
+      } else if (this.isHurt()) {
+      } else if (this.x - this.world?.character?.x < 50) {
         this.walkingStart = false;
         this.attackStart = true;
-      } else if (this.x - this.world.character.x < 500) {
+        this.moveLeft();
+      } else if (this.x - this.world?.character?.x < 500) {
         this.walkingStart = true;
         this.alertStart = false;
         this.moveLeft();
+        this.world.statusBar.push(this.statusBar);
       }
 
       if (this.deadStart) {
         this.playAnimation(this.ENDBOSS_STATUS.dead);
         if (this.currentImage >= this.ENDBOSS_STATUS.dead.length - 1) {
-          setTimeout(() => {
-            clearInterval(bossAnimation);
-            this.y = 120;
-          }, 1000 / 20);
+          clearInterval(bossAnimation);
+          this.y = 120;
         }
-      } else if (this.hurtStart) {
+      } else if (this.isHurt()) {
         this.playAnimation(this.ENDBOSS_STATUS.hurt);
       } else if (this.attackStart) {
         this.playAnimation(this.ENDBOSS_STATUS.attack);
@@ -105,7 +104,7 @@ class Endboss extends Movableobject {
       } else {
         this.playAnimation(this.ENDBOSS_STATUS.alert);
       }
-    }, 1000 / 20);
+    }, 1000 / 30);
   }
 
   hit() {
@@ -114,7 +113,7 @@ class Endboss extends Movableobject {
       // this.dead = true;
       setTimeout(() => {
         this.world.level.enemies = this.world.level.enemies.filter(
-          (e) => e !== this
+          (enemy) => enemy !== this
         );
       }, 2000);
     }

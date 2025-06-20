@@ -60,5 +60,30 @@ class DrawableObject {
     };
   }
 
+  playSounds(key) {
+    let sound = this.sounds[key];
+    sound.play();
+    if (!sound) return;
+    if (!sound.paused) {
+      return;
+    }
+    sound.currentTime = 0;
+    sound.play();
+  }
+
+  stopSound(key) {
+    let sound = this.sounds[key];
+    if (!sound) {
+      return;
+    }
+    if (sound.paused) {
+      return;
+    }
+    if (sound) {
+      sound.pause();
+      sound.currentTime = 0;
+    }
+  }
+
   constructor(parameters) {}
 }

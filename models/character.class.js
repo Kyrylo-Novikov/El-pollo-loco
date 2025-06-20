@@ -3,7 +3,7 @@ class Character extends Movableobject {
   y = 190;
   height = 240;
   width = 100;
-  speed = 5;
+  speed = 20;
   offset = {};
   bottles = 100;
   coin = 0;
@@ -47,6 +47,18 @@ class Character extends Movableobject {
     "img/2_character_pepe/1_idle/idle/I-8.png",
     "img/2_character_pepe/1_idle/idle/I-9.png",
     "img/2_character_pepe/1_idle/idle/I-10.png",
+  ];
+  IMAGES_IDLE_LONG = [
+    "img/2_character_pepe/1_idle/long_idle/I-11.png",
+    "img/2_character_pepe/1_idle/long_idle/I-12.png",
+    "img/2_character_pepe/1_idle/long_idle/I-13.png",
+    "img/2_character_pepe/1_idle/long_idle/I-14.png",
+    "img/2_character_pepe/1_idle/long_idle/I-15.png",
+    "img/2_character_pepe/1_idle/long_idle/I-16.png",
+    "img/2_character_pepe/1_idle/long_idle/I-17.png",
+    "img/2_character_pepe/1_idle/long_idle/I-18.png",
+    "img/2_character_pepe/1_idle/long_idle/I-19.png",
+    "img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
   IMAGES_HURT = [
     "img/2_character_pepe/4_hurt/H-41.png",
@@ -100,7 +112,7 @@ class Character extends Movableobject {
          */
         this.world.camera_x = -this.x + 100;
       }
-    }, 1000 / 120);
+    }, 1000 / 30);
 
     const animationsInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_IDLE);
@@ -117,7 +129,7 @@ class Character extends Movableobject {
           this.playAnimation(this.IMAGES_WALKING);
         }
       }
-    }, 1000 / 20);
+    }, 1000 / 30);
   }
 
   jump() {
