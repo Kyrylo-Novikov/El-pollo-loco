@@ -1,9 +1,5 @@
 class Screen extends DrawableObject {
-  SCREENS = {
-    start: "img/9_intro_outro_screens/start/startscreen_1.png",
-    win: "img/You won, you lost/You Win A.png",
-    lose: "img/You won, you lost/Game Over.png",
-  };
+  SCREENS = {};
 
   width = 720;
   height = 480;

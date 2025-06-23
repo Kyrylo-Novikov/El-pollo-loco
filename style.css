@@ -3,6 +3,10 @@
   src: url("fonts/TACOBOX_.TTF") format("truetype"); /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
+.d-none {
+  display: none;
+}
+
 body {
   font-family: "tacobox", "Arial", "Helvetica", "sans-serif";
   font-size: 42px;
@@ -10,7 +14,6 @@ body {
   flex-direction: column;
   align-items: center;
   font-weight: bolder;
-  /* background: url(img/background_site/mexico-desert-way.png), no-repeat, cover; */
   background: url(img/background_site/mexico-desert-way.png) top center/cover
     no-repeat;
 
@@ -23,4 +26,35 @@ canvas {
   background-color: black;
   border-radius: 20px;
   border: 6px solid black;
+}
+.game-container {
+  width: 720px;
+  height: 480px;
+}
+
+.overlay {
+  top: 200px;
+  width: 720px;
+  height: 480px;
+  border-radius: 20px;
+  border: 6px solid black;
+  position: absolute;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.overlay.start {
+  background-image: url("img/9_intro_outro_screens/start/startscreen_1.png");
+}
+
+.overlay.win {
+  background-image: url("img/You won, you lost/You Win A.png");
+  background-color: blue;
+}
+
+.overlay.game-over {
+  background-image: url("img/You won, you lost/Game Over.png");
+  background-size: contain;
+  background-color: blue;
 }

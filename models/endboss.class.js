@@ -13,7 +13,7 @@ class Endboss extends Movableobject {
   maxX = 2800;
   minX = 2000;
   statusBar = new StatusBar(500, 10, "boss", 100);
-
+  bossAnimation;
   ENDBOSS_STATUS = {
     walking: [
       "img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -65,11 +65,11 @@ class Endboss extends Movableobject {
     this.hurtStart = false;
     this.deadStart = false;
     this.x = 2500;
-    // this.animate();
+    this.animate();
   }
 
   animate() {
-    let bossAnimation = setInterval(() => {
+    this.bossAnimation = setInterval(() => {
       if (this.isDead() && !this.deadStart) {
         this.deadStart = true;
         this.walkingStart = false;
@@ -92,7 +92,7 @@ class Endboss extends Movableobject {
       if (this.deadStart) {
         this.playAnimation(this.ENDBOSS_STATUS.dead);
         if (this.currentImage >= this.ENDBOSS_STATUS.dead.length - 1) {
-          clearInterval(bossAnimation);
+          clearInterval(this.bossAnimation);
           this.y = 120;
         }
       } else if (this.isHurt()) {
@@ -105,6 +105,10 @@ class Endboss extends Movableobject {
         this.playAnimation(this.ENDBOSS_STATUS.alert);
       }
     }, 1000 / 30);
+  }
+
+  stopAnimation() {
+    clearInterval(this.bossAnimation);
   }
 
   hit() {

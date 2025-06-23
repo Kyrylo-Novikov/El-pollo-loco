@@ -9,16 +9,27 @@
 
   <body onload="init()">
     <h1>El pollo loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
-    <button type="button" onclick="openFullscreen()">Fullscreen</button>
-
+    <div id="game-container" class="game-container">
+      <canvas id="canvas" width="720" height="480"></canvas>
+      <button type="button" onclick="openFullscreen()">Fullscreen</button>
+      <div id="overlay-start" class="overlay start">
+        <h>Help Pepe</h>
+        <button onclick="startTheGame()">Start</button>
+      </div>
+      <div id="overlay-game-over" class="overlay game-over d-none">
+        <button onclick="startTheGame()">Try Again</button>
+      </div>
+      <div id="overlay-win" class="overlay win d-none">
+        <button onclick="startTheGame()">New Game</button>
+      </div>
+    </div>
     <script src="/models/drawable-object.class.js"></script>
 
     <script src="/models/status-bar.class.js"></script>
     <script src="/models/collectibles.class.js"></script>
     <script src="/models/world.class.js"></script>
     <script src="/models/movable-object.class.js"></script>
-    <script src="/models/screens.class.js"></script>
+    <!-- <script src="/models/screens.class.js"></script> -->
     <script src="/models/throwable-object.class.js"></script>
     <script src="/models/background-object.class.js"></script>
     <script src="/models/character.class.js"></script>

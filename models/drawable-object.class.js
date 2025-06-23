@@ -13,6 +13,7 @@ class DrawableObject {
     right: 0,
   };
   otherDirection = false;
+  sounds = {};
 
   //   loadImage('img/test.png')
   loadImage(path) {
@@ -64,6 +65,7 @@ class DrawableObject {
     let sound = this.sounds[key];
     sound.play();
     if (!sound) return;
+    sound.volume = 0.25;
     if (!sound.paused) {
       return;
     }
@@ -82,6 +84,15 @@ class DrawableObject {
     if (sound) {
       sound.pause();
       sound.currentTime = 0;
+    }
+  }
+
+  stopAllSounds() {
+    for (const sound of Object.values(this.sounds)) {
+      if (!sound.paused) {
+        sound.pause();
+        sound.currentTime = 0;
+      }
     }
   }
 

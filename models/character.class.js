@@ -7,6 +7,9 @@ class Character extends Movableobject {
   offset = {};
   bottles = 100;
   coin = 0;
+  lastMove = 0;
+  animationsInterval;
+  animationsInterval;
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -65,6 +68,13 @@ class Character extends Movableobject {
     "img/2_character_pepe/4_hurt/H-42.png",
     "img/2_character_pepe/4_hurt/H-43.png",
   ];
+  sounds = {
+    run: new Audio("audio/run-character.mp3"),
+    jump: new Audio("audio/jump.mp3"),
+    snor: new Audio("audio/snoring.mp3"),
+    hurt: new Audio("audio/hurt.mp3"),
+    death: new Audio("audio/death.mp3"),
+  };
 
   world;
 
@@ -73,6 +83,7 @@ class Character extends Movableobject {
     super.loadImages(this.IMAGES_WALKING);
     super.loadImages(this.IMAGES_JUMPING);
     super.loadImages(this.IMAGES_DEAD);
+    super.loadImages(this.IMAGES_IDLE_LONG);
     super.loadImages(this.IMAGES_IDLE);
     super.loadImages(this.IMAGES_HURT);
     this.animate();
@@ -82,11 +93,12 @@ class Character extends Movableobject {
       bottom: 10,
       right: 30,
     };
+    this.lastMove = new Date().getTime();
     this.applyGravity();
   }
 
   animate() {
-    const controlleInterval = setInterval(() => {
+    this.controlleInterval = setInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
         this.otherDirection = false;
@@ -97,42 +109,56 @@ class Character extends Movableobject {
       }
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
+        this.playSounds("jump");
       }
       if (this.world.keyboard.D) {
+        this.lastMove = new Date().getTime();
       }
-
-      /**
-       * this.world.camera_x = -2100 + 100; friert die camera ein
-       */
       if (this.x >= 2100) {
         this.world.camera_x = -2100 + 100;
       } else {
-        /**
-         * this.world.camera_x = -this.x + 100; verschiebt die camera /hintergrund gegen die richtung des characters so wirkt es als ob die welt sich bewegt und nicht der character.
-         */
         this.world.camera_x = -this.x + 100;
       }
     }, 1000 / 30);
 
-    const animationsInterval = setInterval(() => {
-      this.playAnimation(this.IMAGES_IDLE);
+    this.animationsInterval = setInterval(() => {
       if (this.isDead()) {
+        this.playSounds("death");
         this.playAnimation(this.IMAGES_DEAD);
-        clearInterval(animationsInterval);
-        clearInterval(controlleInterval);
       } else if (this.isHurt()) {
+        this.playSounds("hurt");
         this.playAnimation(this.IMAGES_HURT);
+        this.lastMove = new Date().getTime();
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
+        this.lastMove = new Date().getTime();
+      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+        this.playSounds("run");
+        this.lastMove = new Date().getTime();
+        this.playAnimation(this.IMAGES_WALKING);
+      } else if (this.idelLong()) {
+        this.playSounds("snor");
+        this.playAnimation(this.IMAGES_IDLE_LONG);
       } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.playAnimation(this.IMAGES_WALKING);
-        }
+        this.playAnimation(this.IMAGES_IDLE);
+        this.stopSound("run");
+        this.stopSound("snor");
       }
     }, 1000 / 30);
   }
 
+  idelLong() {
+    let sinceLastMove = new Date().getTime() - this.lastMove;
+    return sinceLastMove > 10000;
+  }
+
   jump() {
     this.speedY = 30;
+  }
+
+  stopAnimation() {
+    // this.world.stopGame();
+    clearInterval(this.animationsInterval);
+    clearInterval(this.controlleInterval);
   }
 }

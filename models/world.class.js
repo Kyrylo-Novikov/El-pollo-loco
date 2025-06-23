@@ -7,42 +7,63 @@ class World {
   camera_x = 0;
   statusBar = [];
   throwableObject = [];
-  state = "start";
+  gameloop;
 
   constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.level = level;
     this.statusBar = [
       new StatusBar(10, 0, "health", 100),
       new StatusBar(10, 40, "coin", 0),
       new StatusBar(10, 80, "bottle", 100),
     ];
-    this.screen = {
-      start: new Screen("start"),
-      win: new Screen("win"),
-      lose: new Screen("lose"),
-    };
-    this.level = level;
     this.draw();
     this.setWorld();
     this.setWorldEnemy();
   }
 
   run() {
-    this.spawnEnemies();
-    setInterval(() => {
+    this.gameloop = setInterval(() => {
       this.checkCollecting();
       this.checkCollisions();
       this.checkThrowObject();
       this.checkHitting();
       this.removeTheowableObjects();
+
+      if (this.character.isDead()) {
+        this.stopGame();
+        let gemeOver = document.getElementById("overlay-game-over");
+        gemeOver.classList.remove("d-none");
+      }
+
+      if (this.character.x >= 2700) {
+        this.stopGame();
+        let gemeWin = document.getElementById("overlay-win");
+        gemeWin.classList.remove("d-none");
+      }
     }, 100);
   }
 
-  spawnEnemies() {
-    this.level.enemies.forEach((e) => {
-      e.animate();
+  stopGame() {
+    clearInterval(this.gameloop);
+    this.character.stopAnimation();
+    this.level.enemies.forEach((enemy) => {
+      enemy.stopAnimation();
+    });
+    setTimeout(() => {
+      this.stopAllSounds();
+    }, 500);
+  }
+
+  stopAllSounds() {
+    this.character.stopAllSounds();
+    this.level.enemies.forEach((enemy) => {
+      enemy.stopAllSounds();
+    });
+    this.throwableObject.forEach((throwableObject) => {
+      throwableObject.stopAllSounds();
     });
   }
 
@@ -118,23 +139,6 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    if (this.state !== "playing") {
-      this.screen[this.state].draw(this.ctx);
-      requestAnimationFrame(() => this.draw());
-      return;
-    }
-    if (this.character.energy <= 0 && this.state === "playing") {
-      setTimeout(() => {
-        this.state = "lose";
-      }, 700);
-    }
-
-    if (this.character.x >= 2700) {
-      setTimeout(() => {
-        this.state = "win";
-      }, 500);
-    }
-
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.backgroundObject);
     this.addObjectToMap(this.level.collectibles);

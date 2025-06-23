@@ -1,23 +1,29 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let backgroundMusic = new Audio("audio/hintergrund-game.mp3");
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.2;
 
 function init() {
   canvas = document.getElementById("canvas");
-  let level = level1();
-  world = new World(canvas, keyboard, level);
 }
 
-window.addEventListener("click", () => {
-  if (!world) return;
-
-  if (world.state === "start") {
-    world.state = "playing";
-    world.run();
-  } else if (world.state === "lose" || world.state === "win") {
-    init();
+function startTheGame() {
+  if (world) {
+    world.stopGame();
   }
-});
+  let level = level1();
+  world = new World(canvas, keyboard, level);
+  world.run();
+  let overlays = document.querySelectorAll(".overlay");
+
+  overlays.forEach((overlay) => {
+    overlay.classList.add("d-none");
+  });
+
+  backgroundMusic.play();
+}
 
 window.addEventListener("keydown", (event) => {
   if (event.code === "ArrowUp") {
