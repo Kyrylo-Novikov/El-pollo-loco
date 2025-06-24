@@ -62,13 +62,11 @@ class DrawableObject {
   }
 
   playSounds(key) {
+    if (this.world.isMuted) return;
     let sound = this.sounds[key];
-    sound.play();
     if (!sound) return;
-    sound.volume = 0.25;
-    if (!sound.paused) {
-      return;
-    }
+    sound.volume = 0.1;
+    if (!sound.paused) return;
     sound.currentTime = 0;
     sound.play();
   }

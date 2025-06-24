@@ -8,20 +8,46 @@ class World {
   statusBar = [];
   throwableObject = [];
   gameloop;
+  backgroundMusic = new Audio("audio/hintergrund-game.mp3");
+  isMuted = false;
 
   constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.level = level;
+    this.loadMuteStatus();
+
     this.statusBar = [
       new StatusBar(10, 0, "health", 100),
       new StatusBar(10, 40, "coin", 0),
       new StatusBar(10, 80, "bottle", 100),
     ];
+    this.backgroundMusicManager();
     this.draw();
     this.setWorld();
     this.setWorldEnemy();
+  }
+
+  toggleMute() {
+    this.isMuted = !this.isMuted;
+    this.saveMuteStatus();
+    if (this.backgroundMusic) {
+      if (this.isMuted) {
+        this.backgroundMusic.pause();
+      } else {
+        this.backgroundMusic.play();
+      }
+    }
+  }
+
+  backgroundMusicManager() {
+    if (this.isMuted) return;
+    else {
+      this.backgroundMusic.volume = 0.2;
+      this.backgroundMusic.play();
+      this.backgroundMusic.loop = true;
+    }
   }
 
   run() {
@@ -47,14 +73,14 @@ class World {
   }
 
   stopGame() {
+    this.backgroundMusic.pause();
     clearInterval(this.gameloop);
     this.character.stopAnimation();
     this.level.enemies.forEach((enemy) => {
       enemy.stopAnimation();
     });
-    setTimeout(() => {
-      this.stopAllSounds();
-    }, 500);
+
+    this.stopAllSounds();
   }
 
   stopAllSounds() {
@@ -90,6 +116,15 @@ class World {
     });
   }
 
+  saveMuteStatus() {
+    localStorage.setItem("muteStatus", JSON.stringify(this.isMuted));
+  }
+
+  loadMuteStatus() {
+    let savedStatus = localStorage.getItem("muteStatus");
+    this.isMuted = JSON.parse(savedStatus);
+  }
+
   removeTheowableObjects() {
     this.throwableObject = this.throwableObject.filter(
       (bottle) => !bottle.consumed
@@ -121,6 +156,7 @@ class World {
         this.character.y + 100,
         this.character.otherDirection
       );
+      bottle.world = this;
       this.throwableObject.push(bottle);
       this.character.bottles -= 20;
       this.statusBar[2].setPercentage(this.character.bottles);

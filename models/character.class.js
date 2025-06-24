@@ -157,7 +157,6 @@ class Character extends Movableobject {
   }
 
   stopAnimation() {
-    // this.world.stopGame();
     clearInterval(this.animationsInterval);
     clearInterval(this.controlleInterval);
   }

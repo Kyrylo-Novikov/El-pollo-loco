@@ -12,7 +12,7 @@ class Chicken extends Movableobject {
   IMAGE_DEAD = ["img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
   sounds = {
-    standard: new Audio("audio/chicken_Jh8tPb3v.mp3"),
+    standard: new Audio("audio/chicken.mp3"),
     dead: new Audio("audio/chicken_dead.mp3"),
   };
 
@@ -69,7 +69,7 @@ class Chicken extends Movableobject {
         this.world.level.enemies = this.world.level.enemies.filter(
           (e) => e !== this
         );
-      }, 2000);
+      }, 1000);
     }
   }
 }

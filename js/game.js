@@ -1,9 +1,6 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let backgroundMusic = new Audio("audio/hintergrund-game.mp3");
-backgroundMusic.loop = true;
-backgroundMusic.volume = 0.2;
 
 function init() {
   canvas = document.getElementById("canvas");
@@ -15,14 +12,23 @@ function startTheGame() {
   }
   let level = level1();
   world = new World(canvas, keyboard, level);
-  world.run();
-  let overlays = document.querySelectorAll(".overlay");
+  setTimeout(() => {
+    hiddeOverlays();
+    world.run();
+  }, 500);
+}
 
+function backToStart() {
+  hiddeOverlays();
+  let startOverlay = document.getElementById("overlay-start");
+  startOverlay.classList.remove("d-none");
+}
+
+function hiddeOverlays() {
+  let overlays = document.querySelectorAll(".overlay");
   overlays.forEach((overlay) => {
     overlay.classList.add("d-none");
   });
-
-  backgroundMusic.play();
 }
 
 window.addEventListener("keydown", (event) => {

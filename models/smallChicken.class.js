@@ -7,7 +7,7 @@ class SmallChicken extends Chicken {
 
   IMAGE_DEAD = ["img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
   sounds = {
-    standard: new Audio("audio/small-chicken-noise_dMEMJDpb.mp3"),
+    standard: new Audio("audio/small-chicken.mp3"),
     dead: new Audio("audio/chicken_dead.mp3"),
   };
 

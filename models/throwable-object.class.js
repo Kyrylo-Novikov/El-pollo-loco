@@ -46,7 +46,7 @@ class ThrowableObject extends Movableobject {
     this.applyGravity();
     this.throwInterval = setInterval(() => {
       this.playAnimation(this.IMAGE_BOTTLE_ROTATION);
-      this.playSounds("throw");
+
       if (this.otherDirection) {
         this.x -= 10;
       } else {
@@ -54,6 +54,8 @@ class ThrowableObject extends Movableobject {
       }
       if (this.y >= 500) {
         this.stopSound("throw");
+      } else {
+        this.playSounds("throw");
       }
     }, 1000 / 30);
   }
