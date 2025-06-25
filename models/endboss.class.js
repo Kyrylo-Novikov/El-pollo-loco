@@ -52,6 +52,15 @@ class Endboss extends Movableobject {
       "img/4_enemie_boss_chicken/5_dead/G26.png",
     ],
   };
+  hurtSoundPlayed = false;
+
+  sounds = {
+    walk: new Audio("audio/endboss-walk.mp3"),
+    attack: new Audio("audio/endboss-atk.mp3"),
+    dead: new Audio("audio/endboss_dead.mp3"),
+    idel: new Audio("audio/endboss_idle.mp3"),
+    hurt: new Audio("audio/endboss-hurt.mp3"),
+  };
   constructor() {
     super().loadImage("img/4_enemie_boss_chicken/2_alert/G5.png");
     this.loadImages(this.ENDBOSS_STATUS.alert);
@@ -76,17 +85,28 @@ class Endboss extends Movableobject {
         this.attackStart = false;
         this.hurtStart = false;
         this.alertStart = false;
+        this.playSounds("dead");
         this.currentImage = 0;
       } else if (this.isHurt()) {
-      } else if (this.x - this.world?.character?.x < 50) {
+        if (!this.hurtSoundPlayed) {
+          this.playSounds("hurt");
+          this.hurtSoundPlayed = true;
+        }
+      } else {
+        this.hurtSoundPlayed = false;
+      }
+      if (Math.abs(this.x - this.world.character.x) < 100) {
         this.walkingStart = false;
         this.attackStart = true;
+        this.playSounds("attack");
         this.moveLeft();
-      } else if (this.x - this.world?.character?.x < 500) {
+      } else if (Math.abs(this.x - this.world.character.x) < 500) {
         this.walkingStart = true;
-        this.alertStart = false;
+        this.attackStart = false;
         this.moveLeft();
-        this.world.statusBar.push(this.statusBar);
+      } else {
+        this.alertStart = true;
+        this.walkingStart = false;
       }
 
       if (this.deadStart) {
@@ -101,8 +121,13 @@ class Endboss extends Movableobject {
         this.playAnimation(this.ENDBOSS_STATUS.attack);
       } else if (this.walkingStart) {
         this.playAnimation(this.ENDBOSS_STATUS.walking);
+        this.playSounds("walk");
+        this.world.statusBar.push(this.statusBar);
       } else {
         this.playAnimation(this.ENDBOSS_STATUS.alert);
+        if (Math.abs(this.x - this.world.character.x) < 800) {
+          this.playSounds("idel");
+        }
       }
     }, 1000 / 30);
   }
@@ -114,12 +139,12 @@ class Endboss extends Movableobject {
   hit() {
     super.hit();
     if (this.energy <= 0 && !this.dead) {
-      // this.dead = true;
+      this.dead = true;
       setTimeout(() => {
         this.world.level.enemies = this.world.level.enemies.filter(
           (enemy) => enemy !== this
         );
-      }, 2000);
+      }, 1000);
     }
   }
 }

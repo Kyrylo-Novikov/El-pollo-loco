@@ -32,19 +32,13 @@ class World {
   toggleMute() {
     this.isMuted = !this.isMuted;
     this.saveMuteStatus();
-    if (this.backgroundMusic) {
-      if (this.isMuted) {
-        this.backgroundMusic.pause();
-      } else {
-        this.backgroundMusic.play();
-      }
-    }
+    this.backgroundMusicManager();
   }
 
   backgroundMusicManager() {
-    if (this.isMuted) return;
+    if (this.isMuted) this.backgroundMusic.pause();
     else {
-      this.backgroundMusic.volume = 0.2;
+      this.backgroundMusic.volume = 0.1;
       this.backgroundMusic.play();
       this.backgroundMusic.loop = true;
     }
@@ -95,7 +89,7 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+      if (!enemy.isDeadStatus && this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBar[0].setPercentage(this.character.energy);
       }

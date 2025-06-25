@@ -25,6 +25,7 @@ class Chicken extends Movableobject {
   };
 
   chickenInterval;
+
   constructor() {
     super();
     this.loadImage(this.IMAGE_DEAD);

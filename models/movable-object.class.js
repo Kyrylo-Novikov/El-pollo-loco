@@ -5,6 +5,7 @@ class Movableobject extends DrawableObject {
   acceleration = 3;
   energy = 100;
   lastHit = 0;
+  isDeadStatus = false;
 
   applyGravity() {
     setInterval(() => {
@@ -36,8 +37,9 @@ class Movableobject extends DrawableObject {
 
   hit() {
     this.energy -= 5;
-    if (this.energy < 0) {
+    if (this.energy <= 0) {
       this.energy = 0;
+      this.isDeadStatus = true;
     } else {
       this.lastHit = new Date().getTime();
     }
