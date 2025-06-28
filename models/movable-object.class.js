@@ -6,12 +6,22 @@ class Movableobject extends DrawableObject {
   energy = 100;
   lastHit = 0;
   isDeadStatus = false;
+  ground = 191;
 
   applyGravity() {
     setInterval(() => {
-      if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
+      if (this.isAboveGround() || this.speedY < 0) {
+        this.y += this.speedY;
+        this.speedY += this.acceleration;
+      }
+    }, 40);
+  }
+
+  groundControll() {
+    setInterval(() => {
+      if (this.y >= this.ground) {
+        this.y = this.ground;
+        this.speedY = 0;
       }
     }, 40);
   }
@@ -29,9 +39,23 @@ class Movableobject extends DrawableObject {
     let b = movebalObject.hitbox();
     return (
       a.x + a.width > b.x &&
-      a.y + a.height > b.y &&
       a.x < b.x + b.width &&
+      a.y + a.height > b.y &&
       a.y < b.y + b.height
+    );
+  }
+
+  isJumpColliding(movebalObject) {
+    let a = this.hitbox();
+    let b = movebalObject.hitbox();
+    const VERTICAL_TOLERANCE = 150;
+
+    return (
+      a.x + a.width > b.x &&
+      a.x < b.x + b.width &&
+      a.y + a.height > b.y &&
+      a.y + a.height - b.y < VERTICAL_TOLERANCE &&
+      this.speedY > 0
     );
   }
 
@@ -69,7 +93,7 @@ class Movableobject extends DrawableObject {
   }
 
   jump() {
-    this.speedY = 30;
+    this.speedY = -30;
   }
 
   collect(collecteble) {

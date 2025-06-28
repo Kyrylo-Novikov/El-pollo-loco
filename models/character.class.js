@@ -1,6 +1,6 @@
 class Character extends Movableobject {
   x = 20;
-  y = 190;
+  y = 187;
   height = 240;
   width = 100;
   speed = 20;
@@ -89,12 +89,17 @@ class Character extends Movableobject {
     this.animate();
     this.offset = {
       top: 120,
-      left: 20,
+      left: 30,
       bottom: 10,
       right: 30,
     };
     this.lastMove = new Date().getTime();
+    this.gravityForCharacter();
+  }
+
+  gravityForCharacter() {
     this.applyGravity();
+    this.groundControll();
   }
 
   animate() {
@@ -152,9 +157,9 @@ class Character extends Movableobject {
     return sinceLastMove > 10000;
   }
 
-  jump() {
-    this.speedY = 30;
-  }
+  // jump() {
+  //   this.speedY = 30;
+  // }
 
   stopAnimation() {
     clearInterval(this.animationsInterval);

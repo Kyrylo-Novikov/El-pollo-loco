@@ -19,7 +19,7 @@ class Chicken extends Movableobject {
   speed = 0.2 + 5 * Math.random();
   offset = {
     top: 10,
-    left: 0,
+    left: 10,
     bottom: 20,
     right: 15,
   };

@@ -10,22 +10,27 @@
   <body onload="init()">
     <h1>El pollo loco</h1>
     <div id="game-container" class="game-container">
-      <canvas id="canvas" width="720" height="480"></canvas>
-      <button type="button" onclick="openFullscreen()">Fullscreen</button>
-      <div id="overlay-start" class="overlay start">
+      <canvas id="canvas" width="720" height="480" class="screen"></canvas>
+
+      <div id="overlay-start" class="overlay start screen">
         <h>Help Pepe</h>
         <button onclick="startTheGame()">Start</button>
       </div>
-      <div id="overlay-game-over" class="overlay game-over d-none">
+      <div id="overlay-game-over" class="overlay game-over d-none screen">
         <button onclick="startTheGame()">Try Again</button>
         <button onclick="backToStart()">Back to Menu</button>
       </div>
-      <div id="overlay-win" class="overlay win d-none">
+      <div id="overlay-win" class="overlay win d-none screen">
         <button onclick="startTheGame()">New Game</button>
         <button onclick="backToStart()">Back to Menu</button>
       </div>
-      <button type="button" onclick="world.toggleMute()">Mute</button>
     </div>
+    <button type="button" class="main-btn" onclick="fullscreenView()">
+      Fullscreen
+    </button>
+    <button type="button" class="main-btn" onclick="world.toggleMute()">
+      Mute
+    </button>
     <script src="/models/drawable-object.class.js"></script>
 
     <script src="/models/status-bar.class.js"></script>

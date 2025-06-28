@@ -21,6 +21,7 @@ function startTheGame() {
 function backToStart() {
   hiddeOverlays();
   let startOverlay = document.getElementById("overlay-start");
+  startOverlay.style.backgroundColor = "black";
   startOverlay.classList.remove("d-none");
 }
 
@@ -73,15 +74,41 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+function fullscreenView() {
+  openFullscreen();
+}
+
 function openFullscreen() {
-  let canvas = document.getElementById("canvas");
-  if (canvas.requestFullscreen()) {
-    canvas.requestFullscreen();
-  } else if (canvas.webkitRequestFullscreen()) {
-    canvas.webkitRequestFullscreen();
-  } else if (canvas.msRequestFullscreen()) {
-    canvas.msRequestFullscreen();
-  } else if (canvas.mozRequestFullScreen()) {
-    canvas.mozRequestFullScreen();
+  let gameContainer = document.getElementById("game-container");
+  if (gameContainer.requestFullscreen) {
+    gameContainer.requestFullscreen();
+  } else if (gameContainer.webkitRequestFullscreen) {
+    gameContainer.webkitRequestFullscreen();
+  } else if (gameContainer.msRequestFullscreen) {
+    gameContainer.msRequestFullscreen();
+  } else if (gameContainer.mozRequestFullScreen) {
+    gameContainer.mozRequestFullScreen();
   }
 }
+
+function styleFullscreen() {
+  let screens = document.querySelectorAll(".screen");
+  screens.forEach((screnn) => {
+    screnn.classList.add("fullscreens");
+  });
+}
+
+function removeStyleFullscreen() {
+  let screens = document.querySelectorAll(".screen");
+  screens.forEach((screnn) => {
+    screnn.classList.remove("fullscreens");
+  });
+}
+
+addEventListener("fullscreenchange", () => {
+  if (document.fullscreenElement) {
+    styleFullscreen();
+  } else {
+    removeStyleFullscreen();
+  }
+});

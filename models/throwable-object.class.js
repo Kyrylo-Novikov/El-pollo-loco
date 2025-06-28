@@ -42,7 +42,7 @@ class ThrowableObject extends Movableobject {
   }
 
   throw() {
-    this.speedY = 30;
+    this.speedY = -30;
     this.applyGravity();
     this.throwInterval = setInterval(() => {
       this.playAnimation(this.IMAGE_BOTTLE_ROTATION);

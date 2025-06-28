@@ -47,7 +47,11 @@ class World {
   run() {
     this.gameloop = setInterval(() => {
       this.checkCollecting();
-      this.checkCollisions();
+      let hasJumpAttackHit = this.jumpAttackCollision();
+
+      if (!hasJumpAttackHit) {
+        this.checkCollisions();
+      }
       this.checkThrowObject();
       this.checkHitting();
       this.removeTheowableObjects();
@@ -73,7 +77,6 @@ class World {
     this.level.enemies.forEach((enemy) => {
       enemy.stopAnimation();
     });
-
     this.stopAllSounds();
   }
 
@@ -108,6 +111,18 @@ class World {
         }
       });
     });
+  }
+
+  jumpAttackCollision() {
+    let bounceHit = false;
+    this.level.enemies.forEach((enemy) => {
+      if (!enemy.isDeadStatus && this.character.isJumpColliding(enemy)) {
+        enemy.hit();
+        this.character.speedY = -20;
+        bounceHit = true;
+      }
+    });
+    return bounceHit;
   }
 
   saveMuteStatus() {
