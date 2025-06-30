@@ -48,7 +48,7 @@ class Movableobject extends DrawableObject {
   isJumpColliding(movebalObject) {
     let a = this.hitbox();
     let b = movebalObject.hitbox();
-    const VERTICAL_TOLERANCE = 150;
+    let VERTICAL_TOLERANCE = 100;
 
     return (
       a.x + a.width > b.x &&

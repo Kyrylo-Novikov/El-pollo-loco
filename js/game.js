@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 
 function init() {
   canvas = document.getElementById("canvas");
+  initMuteStatus();
 }
 
 function startTheGame() {
@@ -30,6 +31,37 @@ function hiddeOverlays() {
   overlays.forEach((overlay) => {
     overlay.classList.add("d-none");
   });
+}
+
+function muteBtn() {
+  let isMuted = loadMuteStatus();
+  isMuted = !isMuted;
+  saveMuteStatus(isMuted);
+  let muteBtn = document.getElementById("mute-btn");
+  muteBtn.classList.toggle("muted", isMuted);
+
+  world.isMuted = isMuted;
+  if (isMuted) {
+    world.backgroundMusic.pause();
+    world.stopAllSounds();
+  } else {
+    world.backgroundMusic.play();
+  }
+}
+
+function initMuteStatus() {
+  let isMuted = loadMuteStatus();
+  let muteBtn = document.getElementById("mute-btn");
+  muteBtn.classList.toggle("muted", isMuted);
+}
+
+function saveMuteStatus(isMuted) {
+  localStorage.setItem("muteStatus", JSON.stringify(isMuted));
+}
+
+function loadMuteStatus() {
+  let savedStatus = localStorage.getItem("muteStatus");
+  return savedStatus ? JSON.parse(savedStatus) : false;
 }
 
 window.addEventListener("keydown", (event) => {
@@ -112,3 +144,7 @@ addEventListener("fullscreenchange", () => {
     removeStyleFullscreen();
   }
 });
+function toggleControlMenu(id) {
+  let elementToShow = document.getElementById(`${id}`);
+  elementToShow.classList.toggle("d-none");
+}

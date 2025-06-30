@@ -54,6 +54,14 @@ canvas {
 
 .main-btn {
   position: relative;
+  border-radius: 12px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px;
+  border: 3px solid red;
 }
 
 .overlay.start {
@@ -74,4 +82,25 @@ canvas {
   width: 100%;
   height: 100%;
   justify-content: center;
+}
+
+.controls {
+  background-color: rgba(128, 128, 128, 0.76);
+}
+
+button > img {
+  height: 48px;
+  width: 48px;
+}
+
+.mute-btn.muted::after {
+  content: "";
+  position: absolute;
+  /* bottom: 0;
+  left: 0; */
+  width: 130%;
+  height: 3px;
+  background-color: red;
+  transform: rotate(-45deg);
+  /* transform-origin: center center; */
 }

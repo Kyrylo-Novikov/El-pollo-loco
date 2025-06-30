@@ -5,42 +5,37 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-  statusBar = [];
+  statusBar = [
+    new StatusBar(10, 0, "health", 100),
+    new StatusBar(10, 40, "coin", 0),
+    new StatusBar(10, 80, "bottle", 100),
+  ];
   throwableObject = [];
   gameloop;
-  backgroundMusic = new Audio("audio/hintergrund-game.mp3");
-  isMuted = false;
+  backgroundMusic = Object.assign(new Audio("audio/hintergrund-game.mp3"), {
+    volume: 0.1,
+    loop: true,
+  });
 
   constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.level = level;
-    this.loadMuteStatus();
-
-    this.statusBar = [
-      new StatusBar(10, 0, "health", 100),
-      new StatusBar(10, 40, "coin", 0),
-      new StatusBar(10, 80, "bottle", 100),
-    ];
+    this.isMuted = loadMuteStatus();
+    this.statusBar;
     this.backgroundMusicManager();
     this.draw();
     this.setWorld();
     this.setWorldEnemy();
   }
 
-  toggleMute() {
-    this.isMuted = !this.isMuted;
-    this.saveMuteStatus();
-    this.backgroundMusicManager();
-  }
-
   backgroundMusicManager() {
     if (this.isMuted) this.backgroundMusic.pause();
     else {
-      this.backgroundMusic.volume = 0.1;
+      // this.backgroundMusic.volume = 0.1;
       this.backgroundMusic.play();
-      this.backgroundMusic.loop = true;
+      // this.backgroundMusic.loop = true;
     }
   }
 
@@ -123,15 +118,6 @@ class World {
       }
     });
     return bounceHit;
-  }
-
-  saveMuteStatus() {
-    localStorage.setItem("muteStatus", JSON.stringify(this.isMuted));
-  }
-
-  loadMuteStatus() {
-    let savedStatus = localStorage.getItem("muteStatus");
-    this.isMuted = JSON.parse(savedStatus);
   }
 
   removeTheowableObjects() {

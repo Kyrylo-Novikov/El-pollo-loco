@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El pollo loco</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="shortcut icon"
+      href="img/10_other/el_pollo_loco_favicon.png"
+      type="image/x-icon"
+    />
   </head>
 
   <body onload="init()">
@@ -24,13 +29,33 @@
         <button onclick="startTheGame()">New Game</button>
         <button onclick="backToStart()">Back to Menu</button>
       </div>
+      <div id="controls-menu" class="controls overlay d-none screen">
+        <div class="explain-game"></div>
+        <div class="explain-btn"></div>
+      </div>
     </div>
     <button type="button" class="main-btn" onclick="fullscreenView()">
-      Fullscreen
+      <img
+        src="img/10_other/fullscreen_white.png"
+        alt="fullscreen einschalten"
+      />
     </button>
-    <button type="button" class="main-btn" onclick="world.toggleMute()">
-      Mute
+    <button
+      type="button"
+      id="mute-btn"
+      class="main-btn mute-btn"
+      onclick="muteBtn()"
+    >
+      <img src="img/10_other/sounds.png" alt="Sound control" />
     </button>
+    <button
+      type="button"
+      class="main-btn"
+      onclick="toggleControlMenu(`controls-menu`)"
+    >
+      <img src="img/10_other/control.png" alt="" />
+    </button>
+
     <script src="/models/drawable-object.class.js"></script>
 
     <script src="/models/status-bar.class.js"></script>
