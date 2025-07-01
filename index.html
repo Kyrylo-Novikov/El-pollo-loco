@@ -29,9 +29,20 @@
         <button onclick="startTheGame()">New Game</button>
         <button onclick="backToStart()">Back to Menu</button>
       </div>
-      <div id="controls-menu" class="controls overlay d-none screen">
-        <div class="explain-game"></div>
-        <div class="explain-btn"></div>
+      <div
+        id="controls-menu"
+        class="d-flex direktion-column controls overlay d-none screen"
+      >
+        <div class="explain-game d-flex direktion-row">
+          <img src="" alt="" class="game-instructions" />
+          <img src="" alt="" class="game-instructions" />
+          <img src="" alt="" class="game-instructions" />
+        </div>
+        <div class="explain-btn d-flex direktion-row">
+          <div>Press Arrow LEFT / RIGHT to move in same direction</div>
+          <div>Press SPACE to jump</div>
+          <div>Press D to throw a bottle</div>
+        </div>
       </div>
     </div>
     <button type="button" class="main-btn" onclick="fullscreenView()">

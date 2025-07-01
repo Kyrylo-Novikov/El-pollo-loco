@@ -19,6 +19,7 @@ class World {
 
   constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
+    this.paused = false;
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.level = level;
@@ -31,16 +32,20 @@ class World {
   }
 
   backgroundMusicManager() {
+    if (this.paused) return;
     if (this.isMuted) this.backgroundMusic.pause();
     else {
-      // this.backgroundMusic.volume = 0.1;
       this.backgroundMusic.play();
-      // this.backgroundMusic.loop = true;
     }
   }
 
   run() {
     this.gameloop = setInterval(() => {
+      if (this.paused) {
+        this.pause();
+        return;
+      }
+      // this.pauseOnOpenOverlay();
       this.checkCollecting();
       let hasJumpAttackHit = this.jumpAttackCollision();
 
@@ -63,6 +68,37 @@ class World {
         gemeWin.classList.remove("d-none");
       }
     }, 100);
+  }
+
+  pauseOnOpenOverlay() {
+    let overlays = Array.from(document.querySelectorAll(".overlay"));
+    let visibleOverlay = overlays.some(
+      (overlay) => !overlay.classList.contains("d-none")
+    );
+    if (visibleOverlay) {
+      this.pause();
+    } else {
+      this.resume();
+    }
+  }
+
+  pause() {
+    this.paused = true;
+    this.backgroundMusicManager();
+    this.character.stopAnimation();
+    this.level.enemies.forEach((enemy) => {
+      enemy.stopAnimation();
+    });
+    this.stopAllSounds();
+  }
+
+  resume() {
+    this.paused = false;
+    this.backgroundMusicManager();
+    this.character.animate();
+    this.level.enemies.forEach((enemy) => {
+      enemy.animate();
+    });
   }
 
   stopGame() {

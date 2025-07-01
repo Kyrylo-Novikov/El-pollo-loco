@@ -22,7 +22,6 @@ function startTheGame() {
 function backToStart() {
   hiddeOverlays();
   let startOverlay = document.getElementById("overlay-start");
-  startOverlay.style.backgroundColor = "black";
   startOverlay.classList.remove("d-none");
 }
 
@@ -37,22 +36,25 @@ function muteBtn() {
   let isMuted = loadMuteStatus();
   isMuted = !isMuted;
   saveMuteStatus(isMuted);
-  let muteBtn = document.getElementById("mute-btn");
-  muteBtn.classList.toggle("muted", isMuted);
-
-  world.isMuted = isMuted;
-  if (isMuted) {
-    world.backgroundMusic.pause();
-    world.stopAllSounds();
-  } else {
-    world.backgroundMusic.play();
+  muteBtnStyle(isMuted);
+  if (world) {
+    world.isMuted = isMuted;
+    world.backgroundMusicManager();
+    if (isMuted) {
+      world.stopAllSounds();
+    }
   }
 }
 
 function initMuteStatus() {
   let isMuted = loadMuteStatus();
+  muteBtnStyle(isMuted);
+}
+
+function muteBtnStyle(isMuted) {
   let muteBtn = document.getElementById("mute-btn");
   muteBtn.classList.toggle("muted", isMuted);
+  muteBtn.classList.toggle("aktivBtn", isMuted);
 }
 
 function saveMuteStatus(isMuted) {
@@ -124,6 +126,8 @@ function openFullscreen() {
 }
 
 function styleFullscreen() {
+  let btn = document.querySelectorAll(".main-btn");
+  btn[0].classList.add("aktivBtn");
   let screens = document.querySelectorAll(".screen");
   screens.forEach((screnn) => {
     screnn.classList.add("fullscreens");
@@ -131,6 +135,8 @@ function styleFullscreen() {
 }
 
 function removeStyleFullscreen() {
+  let btn = document.querySelectorAll(".main-btn");
+  btn[0].classList.remove("aktivBtn");
   let screens = document.querySelectorAll(".screen");
   screens.forEach((screnn) => {
     screnn.classList.remove("fullscreens");
@@ -147,4 +153,9 @@ addEventListener("fullscreenchange", () => {
 function toggleControlMenu(id) {
   let elementToShow = document.getElementById(`${id}`);
   elementToShow.classList.toggle("d-none");
+  let btn = document.querySelectorAll(".main-btn");
+  btn[2].classList.toggle("aktivBtn");
+  if (world) {
+    world.pauseOnOpenOverlay();
+  }
 }
