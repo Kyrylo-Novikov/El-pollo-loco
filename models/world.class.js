@@ -32,11 +32,12 @@ class World {
   }
 
   backgroundMusicManager() {
-    if (this.paused) return;
-    if (this.isMuted) this.backgroundMusic.pause();
-    else {
-      this.backgroundMusic.play();
+    if (this.isMuted) {
+      this.backgroundMusic.pause();
+      return;
     }
+    // if (this.paused) return;
+    this.backgroundMusic.play();
   }
 
   run() {
@@ -45,7 +46,6 @@ class World {
         this.pause();
         return;
       }
-      // this.pauseOnOpenOverlay();
       this.checkCollecting();
       let hasJumpAttackHit = this.jumpAttackCollision();
 
@@ -62,12 +62,12 @@ class World {
         gemeOver.classList.remove("d-none");
       }
 
-      if (this.character.x >= 2700) {
+      if (this.character.x >= 6500) {
         this.stopGame();
         let gemeWin = document.getElementById("overlay-win");
         gemeWin.classList.remove("d-none");
       }
-    }, 100);
+    }, 1000 / 60);
   }
 
   pauseOnOpenOverlay() {
@@ -167,11 +167,13 @@ class World {
       if (this.character.isColliding(collectibles)) {
         if (collectibles.type === "coin") {
           this.character.collect(collectibles);
+          this.character.playSounds("collect");
           this.statusBar[1].setPercentage(this.character.coin);
           return false;
         }
         if (collectibles.type === "bottle" && this.character.bottles < 100) {
           this.character.collect(collectibles);
+          this.character.playSounds("collect");
           this.statusBar[2].setPercentage(this.character.bottles);
           return false;
         }

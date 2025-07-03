@@ -40,6 +40,9 @@ function muteBtn() {
   if (world) {
     world.isMuted = isMuted;
     world.backgroundMusicManager();
+    if (!isMuted) {
+      world.backgroundMusic.play();
+    }
     if (isMuted) {
       world.stopAllSounds();
     }
@@ -153,6 +156,7 @@ addEventListener("fullscreenchange", () => {
 function toggleControlMenu(id) {
   let elementToShow = document.getElementById(`${id}`);
   elementToShow.classList.toggle("d-none");
+  elementToShow.classList.toggle("d-flex");
   let btn = document.querySelectorAll(".main-btn");
   btn[2].classList.toggle("aktivBtn");
   if (world) {

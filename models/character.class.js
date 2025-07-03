@@ -3,13 +3,15 @@ class Character extends Movableobject {
   y = 187;
   height = 240;
   width = 100;
-  speed = 20;
+  speed = 14;
   offset = {};
   bottles = 100;
   coin = 0;
   lastMove = 0;
   animationsInterval;
   animationsInterval;
+  isJumpt = false;
+  jumpTriggered = false;
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -74,6 +76,7 @@ class Character extends Movableobject {
     snor: new Audio("audio/snoring.mp3"),
     hurt: new Audio("audio/hurt.mp3"),
     death: new Audio("audio/death.mp3"),
+    collect: new Audio("audio/take-collectibles.mp3"),
   };
 
   world;
@@ -113,17 +116,15 @@ class Character extends Movableobject {
         this.otherDirection = true;
       }
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-        this.jump();
-        this.playSounds("jump");
+        this.currentImage = 0;
+        this.isJumpt = true;
       }
       if (this.world.keyboard.D) {
         this.lastMove = new Date().getTime();
       }
-      if (this.x >= 2100) {
-        this.world.camera_x = -2100 + 100;
-      } else {
-        this.world.camera_x = -this.x + 100;
-      }
+      let camOffset = this.otherDirection ? 420 : 100;
+      let viewTarget = -this.x + camOffset;
+      this.world.camera_x += (viewTarget - this.world.camera_x) * 0.08;
     }, 1000 / 30);
 
     this.animationsInterval = setInterval(() => {
@@ -134,8 +135,19 @@ class Character extends Movableobject {
         this.playSounds("hurt");
         this.playAnimation(this.IMAGES_HURT);
         this.lastMove = new Date().getTime();
-      } else if (this.isAboveGround()) {
+      } else if (this.isJumpt) {
         this.playAnimation(this.IMAGES_JUMPING);
+        let currentFrame = this.currentImage % this.IMAGES_JUMPING.length;
+        if (!this.jumpTriggered) {
+          this.jump();
+          this.playSounds("jump");
+          this.jumpTriggered = true;
+        }
+        if (currentFrame == this.IMAGES_JUMPING.length - 1) {
+          this.jumpTriggered = false;
+          this.isJumpt = false;
+        }
+
         this.lastMove = new Date().getTime();
       } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playSounds("run");
@@ -149,17 +161,13 @@ class Character extends Movableobject {
         this.stopSound("run");
         this.stopSound("snor");
       }
-    }, 1000 / 30);
+    }, 1000 / 10);
   }
 
   idelLong() {
     let sinceLastMove = new Date().getTime() - this.lastMove;
     return sinceLastMove > 10000;
   }
-
-  // jump() {
-  //   this.speedY = 30;
-  // }
 
   stopAnimation() {
     clearInterval(this.animationsInterval);

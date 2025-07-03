@@ -29,43 +29,63 @@
         <button onclick="startTheGame()">New Game</button>
         <button onclick="backToStart()">Back to Menu</button>
       </div>
-      <div
-        id="controls-menu"
-        class="d-flex direktion-column controls overlay d-none screen"
-      >
-        <div class="explain-game d-flex direktion-row">
+      <div id="controls-menu" class="controls overlay d-none screen">
+        <div class="explain-game">
           <img src="" alt="" class="game-instructions" />
-          <img src="" alt="" class="game-instructions" />
-          <img src="" alt="" class="game-instructions" />
+          <div>
+            Press
+            <span>LEFT or RIGHT</span>
+            arrow key to
+            <span>move</span>
+            in this direction
+          </div>
         </div>
-        <div class="explain-btn d-flex direktion-row">
-          <div>Press Arrow LEFT / RIGHT to move in same direction</div>
-          <div>Press SPACE to jump</div>
-          <div>Press D to throw a bottle</div>
+        <div class="explain-btn">
+          <img src="" alt="" class="game-instructions" />
+          <div>
+            Press
+            <span>SPACE</span>
+            to
+            <span>jump</span>
+          </div>
+        </div>
+        <div>
+          <img src="" alt="" class="game-instructions" />
+          <div>
+            Press
+            <span>D</span>
+            to
+            <span>throw</span>
+            a bottle
+          </div>
         </div>
       </div>
+      <button
+        type="button"
+        class="main-btn fullscreen-btn"
+        onclick="fullscreenView()"
+      >
+        <img
+          src="img/10_other/fullscreen_white.png"
+          alt="fullscreen einschalten"
+        />
+      </button>
+      <button
+        type="button"
+        id="mute-btn"
+        class="main-btn mute-btn"
+        onclick="muteBtn()"
+      >
+        <img src="img/10_other/sounds.png" alt="Sound control" />
+      </button>
+      <button
+        type="button"
+        class="main-btn control-menu-btn"
+        onclick="toggleControlMenu(`controls-menu`)"
+      >
+        <img src="img/10_other/control.png" alt="" />
+      </button>
     </div>
-    <button type="button" class="main-btn" onclick="fullscreenView()">
-      <img
-        src="img/10_other/fullscreen_white.png"
-        alt="fullscreen einschalten"
-      />
-    </button>
-    <button
-      type="button"
-      id="mute-btn"
-      class="main-btn mute-btn"
-      onclick="muteBtn()"
-    >
-      <img src="img/10_other/sounds.png" alt="Sound control" />
-    </button>
-    <button
-      type="button"
-      class="main-btn"
-      onclick="toggleControlMenu(`controls-menu`)"
-    >
-      <img src="img/10_other/control.png" alt="" />
-    </button>
 
     <script src="/models/drawable-object.class.js"></script>
 

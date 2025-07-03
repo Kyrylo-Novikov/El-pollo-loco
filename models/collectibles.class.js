@@ -13,6 +13,10 @@ class Collectibles extends DrawableObject {
     right: 0,
   };
 
+  sound = {
+    take: new Audio("audio/take-collectibles.mp3"),
+  };
+
   constructor(type, x, y, w, h) {
     super();
     this.type = type;

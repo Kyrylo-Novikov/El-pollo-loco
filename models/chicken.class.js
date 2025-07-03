@@ -16,7 +16,7 @@ class Chicken extends Movableobject {
     dead: new Audio("audio/chicken_dead.mp3"),
   };
 
-  speed = 0.2 + 5 * Math.random();
+  speed = Math.max(10 * Math.random(), 3);
   offset = {
     top: 10,
     left: 10,
@@ -31,7 +31,7 @@ class Chicken extends Movableobject {
     this.loadImage(this.IMAGE_DEAD);
     this.loadImages(this.IMAGES_WALKING);
 
-    this.x = 200 + Math.random() * 1500;
+    this.x = 300 + Math.random() * 1500;
     this.speed;
     this.animate();
     this.dead = false;
@@ -52,7 +52,7 @@ class Chicken extends Movableobject {
           this.playSounds("standard");
         }
       }
-    }, 1000 / 20);
+    }, 1000 / 15);
   }
   stopAnimation() {
     clearInterval(this.chickenInterval);
