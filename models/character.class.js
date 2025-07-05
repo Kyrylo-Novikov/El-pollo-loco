@@ -22,14 +22,14 @@ class Character extends Movableobject {
     "img/2_character_pepe/2_walk/W-26.png",
   ];
   IMAGES_JUMPING = [
-    "img/2_character_pepe/3_jump/J-31.png",
-    "img/2_character_pepe/3_jump/J-32.png",
     "img/2_character_pepe/3_jump/J-33.png",
     "img/2_character_pepe/3_jump/J-34.png",
     "img/2_character_pepe/3_jump/J-35.png",
     "img/2_character_pepe/3_jump/J-36.png",
     "img/2_character_pepe/3_jump/J-37.png",
     "img/2_character_pepe/3_jump/J-38.png",
+    "img/2_character_pepe/3_jump/J-38.png",
+    "img/2_character_pepe/3_jump/J-39.png",
     "img/2_character_pepe/3_jump/J-39.png",
   ];
   IMAGES_DEAD = [
@@ -77,6 +77,8 @@ class Character extends Movableobject {
     hurt: new Audio("audio/hurt.mp3"),
     death: new Audio("audio/death.mp3"),
     collect: new Audio("audio/take-collectibles.mp3"),
+    win: new Audio("audio/win.mp3"),
+    lose: new Audio("audio/lose.mp3"),
   };
 
   world;
@@ -161,7 +163,7 @@ class Character extends Movableobject {
         this.stopSound("run");
         this.stopSound("snor");
       }
-    }, 1000 / 10);
+    }, 1000 / 12);
   }
 
   idelLong() {
@@ -172,5 +174,13 @@ class Character extends Movableobject {
   stopAnimation() {
     clearInterval(this.animationsInterval);
     clearInterval(this.controlleInterval);
+  }
+
+  triggerBounceJump() {
+    if (!this.jumpTriggered) {
+      this.isJumpt = true;
+      this.jumpTriggered = true;
+      this.speedY = -20;
+    }
   }
 }

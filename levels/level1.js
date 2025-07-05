@@ -168,9 +168,9 @@ function level1() {
       new Collectibles("coin", 200, 100, 120, 120),
       new Collectibles("coin", 400, 200, 120, 120),
       new Collectibles("coin", 1200, 300, 120, 120),
-      new Collectibles("bottle", 400, 300, 80, 100),
-      new Collectibles("bottle", 500, 300, 80, 100),
-      new Collectibles("bottle", 1000, 300, 80, 100),
+      new Collectibles("bottle", 400, 340, 80, 100),
+      new Collectibles("bottle", 500, 340, 80, 100),
+      new Collectibles("bottle", 1000, 340, 80, 100),
     ]
   );
 }

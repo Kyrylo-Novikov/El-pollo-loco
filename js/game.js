@@ -15,8 +15,9 @@ function startTheGame() {
   world = new World(canvas, keyboard, level);
   setTimeout(() => {
     hiddeOverlays();
+    world.draw();
     world.run();
-  }, 500);
+  }, 1000);
 }
 
 function backToStart() {
@@ -112,7 +113,11 @@ window.addEventListener("keyup", (event) => {
 });
 
 function fullscreenView() {
-  openFullscreen();
+  if (!document.fullscreenElement) {
+    openFullscreen();
+  } else {
+    closeFullscreen();
+  }
 }
 
 function openFullscreen() {
@@ -125,6 +130,18 @@ function openFullscreen() {
     gameContainer.msRequestFullscreen();
   } else if (gameContainer.mozRequestFullScreen) {
     gameContainer.mozRequestFullScreen();
+  }
+}
+
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  } else if (document.mozExitFullscreen) {
+    document.mozExitFullscreen();
   }
 }
 

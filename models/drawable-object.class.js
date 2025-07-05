@@ -68,7 +68,11 @@ class DrawableObject {
     sound.volume = 0.1;
     if (!sound.paused) return;
     sound.currentTime = 0;
-    sound.play();
+    sound.play().catch((err) => {
+      if (err.name !== "AbortError") {
+        console.warn(`error on playing '${key}'`);
+      }
+    });
   }
 
   stopSound(key) {

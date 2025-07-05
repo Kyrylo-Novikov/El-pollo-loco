@@ -3,7 +3,7 @@ class Movableobject extends DrawableObject {
   speed = 0.25;
   speedY = 0;
   acceleration = 3;
-  energy = 100;
+  energy = 1000;
   lastHit = 0;
   isDeadStatus = false;
   ground = 191;

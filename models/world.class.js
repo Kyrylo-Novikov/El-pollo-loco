@@ -5,6 +5,8 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  gameRunning = true;
+
   statusBar = [
     new StatusBar(10, 0, "health", 100),
     new StatusBar(10, 40, "coin", 0),
@@ -19,6 +21,7 @@ class World {
 
   constructor(canvas, keyboard, level) {
     this.ctx = canvas.getContext("2d");
+    this.gameRunning = true;
     this.paused = false;
     this.canvas = canvas;
     this.keyboard = keyboard;
@@ -26,7 +29,7 @@ class World {
     this.isMuted = loadMuteStatus();
     this.statusBar;
     this.backgroundMusicManager();
-    this.draw();
+    // this.draw();
     this.setWorld();
     this.setWorldEnemy();
   }
@@ -36,7 +39,7 @@ class World {
       this.backgroundMusic.pause();
       return;
     }
-    // if (this.paused) return;
+
     this.backgroundMusic.play();
   }
 
@@ -58,16 +61,24 @@ class World {
 
       if (this.character.isDead()) {
         this.stopGame();
+        this.gameRunning = false;
+        this.ctx.fillStyle = "black";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         let gemeOver = document.getElementById("overlay-game-over");
         gemeOver.classList.remove("d-none");
+        this.character.playSounds("lose");
       }
 
       if (this.character.x >= 6500) {
         this.stopGame();
+        this.gameRunning = false;
+        this.ctx.fillStyle = "black";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         let gemeWin = document.getElementById("overlay-win");
         gemeWin.classList.remove("d-none");
+        this.character.playSounds("win");
       }
-    }, 1000 / 60);
+    }, 1000 / 20);
   }
 
   pauseOnOpenOverlay() {
@@ -149,7 +160,8 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (!enemy.isDeadStatus && this.character.isJumpColliding(enemy)) {
         enemy.hit();
-        this.character.speedY = -20;
+        this.character.jumpTriggered = false;
+        this.character.triggerBounceJump();
         bounceHit = true;
       }
     });
@@ -207,6 +219,9 @@ class World {
   }
 
   draw() {
+    if (!this.gameRunning) {
+      return;
+    }
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.backgroundObject);

@@ -74,11 +74,11 @@ class ThrowableObject extends Movableobject {
       this.stopSound("throw");
       this.playSounds("splash");
       if (this.currentImage >= this.IMAGE_BOTTLE_SPLASH.length - 1) {
-        this.stopSound("splash");
         clearInterval(bottleHit);
 
         setTimeout(() => {
           this.consumed = true;
+          this.stopSound("splash");
         }, 50);
       }
     }, 1000 / 15);
