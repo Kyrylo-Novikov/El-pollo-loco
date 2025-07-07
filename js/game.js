@@ -2,10 +2,20 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+/**
+ * Initializes the canvas element and mute staus when the application starts.
+ */
+
 function init() {
   canvas = document.getElementById("canvas");
   initMuteStatus();
 }
+
+/**
+ * Loads the level and creats a new world for a game.
+ * If a world are already exists, it stop it first.
+ * Then hides overlays and starts the draw and run loops of the world  after a 1 second delay.
+ */
 
 function startTheGame() {
   if (world) {
@@ -14,25 +24,37 @@ function startTheGame() {
   let level = level1();
   world = new World(canvas, keyboard, level);
   setTimeout(() => {
-    hiddeOverlays();
+    hideOverlays();
     world.draw();
     world.run();
   }, 1000);
 }
 
+/**
+ * Hides all overlay elements ,then showing the start overlay.
+ */
+
 function backToStart() {
-  hiddeOverlays();
+  hideOverlays();
   let startOverlay = document.getElementById("overlay-start");
   startOverlay.classList.remove("d-none");
 }
 
-function hiddeOverlays() {
-  let overlays = document.querySelectorAll(".overlay");
+/**
+ * Hides all overlay elements by adding the "d-none" class
+ */
+
+function hideOverlays() {
+  const overlays = document.querySelectorAll(".overlay");
   overlays.forEach((overlay) => {
     overlay.classList.add("d-none");
   });
 }
 
+/**
+ * load the mute status from localStorage, toggle it, save the new status ,
+ * update the button style and controls the sound behavior.
+ */
 function muteBtn() {
   let isMuted = loadMuteStatus();
   isMuted = !isMuted;
@@ -50,10 +72,19 @@ function muteBtn() {
   }
 }
 
+/**
+ * load the mute status form localStorage and style the button.
+ */
+
 function initMuteStatus() {
   let isMuted = loadMuteStatus();
   muteBtnStyle(isMuted);
 }
+
+/**
+ * Toggles the style based on the mute status
+ * @param {boolean} isMuted - Indicates whether the sound is muted
+ */
 
 function muteBtnStyle(isMuted) {
   let muteBtn = document.getElementById("mute-btn");
@@ -61,14 +92,28 @@ function muteBtnStyle(isMuted) {
   muteBtn.classList.toggle("aktivBtn", isMuted);
 }
 
+/**
+ * Saves the mute status in localStorage
+ * @param {boolean} isMuted - Indicates whether the sound is muted
+ */
 function saveMuteStatus(isMuted) {
   localStorage.setItem("muteStatus", JSON.stringify(isMuted));
 }
 
+/**
+ * Loads from the localStorage whether the sound is muted
+ * @returns true if muted, false otherwise.
+ */
 function loadMuteStatus() {
   let savedStatus = localStorage.getItem("muteStatus");
   return savedStatus ? JSON.parse(savedStatus) : false;
 }
+
+/**
+ * Listen on pressed keys in the window and set the key flag to true
+ * @listens window#keydown
+ * @param {KeyboardEvent} event - The keydowm event triggered by the user pressing a key
+ */
 
 window.addEventListener("keydown", (event) => {
   if (event.code === "ArrowUp") {
@@ -91,6 +136,11 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+/**
+ * Listen on realeased keys on the window and sets the key flag to false.
+ * @listens window#keyup
+ * @param {KeyboardEvent} event - The keyup event triggered by the user released a key
+ */
 window.addEventListener("keyup", (event) => {
   if (event.code === "ArrowUp") {
     keyboard.UP = false;
@@ -112,6 +162,12 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+/**
+ * toggles fullscrenn:
+ * - enters fullscreen if no element is currently fullscreen
+ * - exits fullscreen if an element is already fullscreen
+ */
+
 function fullscreenView() {
   if (!document.fullscreenElement) {
     openFullscreen();
@@ -120,6 +176,9 @@ function fullscreenView() {
   }
 }
 
+/**
+ * Enters fullscreen
+ */
 function openFullscreen() {
   let gameContainer = document.getElementById("game-container");
   if (gameContainer.requestFullscreen) {
@@ -133,6 +192,10 @@ function openFullscreen() {
   }
 }
 
+/**
+ * Exits the fullscreen
+ */
+
 function closeFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -145,6 +208,9 @@ function closeFullscreen() {
   }
 }
 
+/**
+ * Styles the button and overlays so they displayed correctly in fullscreen
+ */
 function styleFullscreen() {
   let btn = document.querySelectorAll(".main-btn");
   btn[0].classList.add("aktivBtn");
@@ -154,6 +220,9 @@ function styleFullscreen() {
   });
 }
 
+/**
+ * Removes the style of the button and the overlays so they displayed correctly when fullscrenn is exited
+ */
 function removeStyleFullscreen() {
   let btn = document.querySelectorAll(".main-btn");
   btn[0].classList.remove("aktivBtn");
@@ -163,6 +232,8 @@ function removeStyleFullscreen() {
   });
 }
 
+/**Listens for changes in fullscreen status updates style */
+
 addEventListener("fullscreenchange", () => {
   if (document.fullscreenElement) {
     styleFullscreen();
@@ -170,6 +241,11 @@ addEventListener("fullscreenchange", () => {
     removeStyleFullscreen();
   }
 });
+
+/**
+ * Toggled the visibility of the menu overlay ,the button style changes and pauses the world if its exists.
+ * @param {string} id - id of the menu overlay to toggle
+ */
 function toggleControlMenu(id) {
   let elementToShow = document.getElementById(`${id}`);
   elementToShow.classList.toggle("d-none");

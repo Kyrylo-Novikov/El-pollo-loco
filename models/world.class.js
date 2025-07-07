@@ -260,7 +260,7 @@ class World {
       this.flipImage(movebalObject);
     }
     movebalObject.draw(this.ctx);
-    movebalObject.drawFrame(this.ctx);
+    // movebalObject.drawFrame(this.ctx);
     this.ctx.stroke();
     if (movebalObject.otherDirection) {
       this.flipImageBack(movebalObject);

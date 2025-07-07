@@ -51,16 +51,16 @@ class ThrowableObject extends Movableobject {
       this.playAnimation(this.IMAGE_BOTTLE_ROTATION);
 
       if (this.otherDirection) {
-        this.x -= 10;
+        this.x -= 14;
       } else {
-        this.x += 10;
+        this.x += 14;
       }
       if (this.y >= 500) {
         this.stopSound("throw");
       } else {
         this.playSounds("throw");
       }
-    }, 1000 / 15);
+    }, 1000 / 10);
   }
 
   splash() {
