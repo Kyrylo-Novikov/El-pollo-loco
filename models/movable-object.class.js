@@ -3,7 +3,7 @@ class Movableobject extends DrawableObject {
   speed = 0.25;
   speedY = 0;
   acceleration = 3;
-  energy = 1000;
+  energy = 100;
   lastHit = 0;
   isDeadStatus = false;
   ground = 191;
@@ -34,9 +34,9 @@ class Movableobject extends DrawableObject {
     }
   }
 
-  isColliding(movebalObject) {
+  isColliding(movableObject) {
     let a = this.hitbox();
-    let b = movebalObject.hitbox();
+    let b = movableObject.hitbox();
     return (
       a.x + a.width > b.x &&
       a.x < b.x + b.width &&
@@ -45,9 +45,9 @@ class Movableobject extends DrawableObject {
     );
   }
 
-  isJumpColliding(movebalObject) {
+  isJumpColliding(movableObject) {
     let a = this.hitbox();
-    let b = movebalObject.hitbox();
+    let b = movableObject.hitbox();
     let VERTICAL_TOLERANCE = 100;
 
     return (
