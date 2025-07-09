@@ -29,6 +29,14 @@
         <button onclick="startTheGame()">New Game</button>
         <button onclick="backToStart()">Back to Menu</button>
       </div>
+      <div id="overlay-game-restart" class="overlay restart d-none screen">
+        <button onclick="startTheGame()">Try Again</button>
+        <button onclick="backToStart()">Back to Menu</button>
+      </div>
+      <div id="info-overlay" class="overlay info d-none screen">
+        <button onclick="">Privacy Policy</button>
+        <button onclick="">Legal Notice</button>
+      </div>
       <div id="controls-menu" class="controls overlay d-none screen">
         <div class="explain-btn">
           <img
@@ -95,9 +103,26 @@
       <button
         type="button"
         class="main-btn control-menu-btn"
-        onclick="toggleControlMenu(`controls-menu`)"
+        id="control-menu-btn"
+        onclick="toggleOverlay(`controls-menu`,`control-menu-btn`)"
       >
         <img src="img/10_other/control.png" alt="" />
+      </button>
+      <button
+        type="button"
+        class="main-btn restart-btn"
+        id="restart-btn"
+        onclick="toggleOverlay(`overlay-game-restart`,`restart-btn`)"
+      >
+        <img src="img/10_other/restart.png" alt="" />
+      </button>
+      <button
+        type="button"
+        class="main-btn info-btn"
+        id="info-btn"
+        onclick="toggleOverlay(`info-overlay`,`info-btn`)"
+      >
+        <img src="img/10_other/info.png" alt="" />
       </button>
     </div>
 
@@ -107,7 +132,6 @@
     <script src="/models/collectibles.class.js"></script>
     <script src="/models/world.class.js"></script>
     <script src="/models/movable-object.class.js"></script>
-    <!-- <script src="/models/screens.class.js"></script> -->
     <script src="/models/throwable-object.class.js"></script>
     <script src="/models/background-object.class.js"></script>
     <script src="/models/character.class.js"></script>

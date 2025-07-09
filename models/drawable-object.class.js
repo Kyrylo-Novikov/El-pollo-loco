@@ -57,17 +57,12 @@ class DrawableObject {
   }
 
   /**
-   * Draws the hitbox of the object to see the offsets and check the collisions
+   * Draws the hitbox of the object to see the collisions between the difdrent objects.
+   * Used for debugging
    * @param {CanvasRenderingContext2D} ctx - The context for the rendering canvas
    */
   drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Chicken ||
-      this instanceof Endboss ||
-      this instanceof Collectibles ||
-      this instanceof ThrowableObject
-    ) {
+    if (this.hasCollisionFrame()) {
       let hitbox = this.hitbox();
       let x = hitbox.x;
       let y = hitbox.y;
@@ -79,6 +74,20 @@ class DrawableObject {
       ctx.rect(x, y, width, height);
       ctx.stroke();
     }
+  }
+
+  /**
+   * Checks whether the object need a collision frame.
+   * @returns {boolean}
+   */
+  hasCollisionFrame() {
+    return (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof Endboss ||
+      this instanceof Collectibles ||
+      this instanceof ThrowableObject
+    );
   }
 
   /**

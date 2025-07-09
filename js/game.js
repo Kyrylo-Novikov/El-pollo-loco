@@ -5,7 +5,6 @@ let keyboard = new Keyboard();
 /**
  * Initializes the canvas element and mute staus when the application starts.
  */
-
 function init() {
   canvas = document.getElementById("canvas");
   initMuteStatus();
@@ -16,7 +15,6 @@ function init() {
  * If a world are already exists, it stop it first.
  * Then hides overlays and starts the draw and run loops of the world  after a 1 second delay.
  */
-
 function startTheGame() {
   if (world) {
     world.stopGame();
@@ -33,7 +31,6 @@ function startTheGame() {
 /**
  * Hides all overlay elements ,then showing the start overlay.
  */
-
 function backToStart() {
   hideOverlays();
   let startOverlay = document.getElementById("overlay-start");
@@ -43,7 +40,6 @@ function backToStart() {
 /**
  * Hides all overlay elements by adding the "d-none" class
  */
-
 function hideOverlays() {
   const overlays = document.querySelectorAll(".overlay");
   overlays.forEach((overlay) => {
@@ -75,7 +71,6 @@ function muteBtn() {
 /**
  * load the mute status form localStorage and style the button.
  */
-
 function initMuteStatus() {
   let isMuted = loadMuteStatus();
   muteBtnStyle(isMuted);
@@ -85,7 +80,6 @@ function initMuteStatus() {
  * Toggles the style based on the mute status
  * @param {boolean} isMuted - Indicates whether the sound is muted
  */
-
 function muteBtnStyle(isMuted) {
   let muteBtn = document.getElementById("mute-btn");
   muteBtn.classList.toggle("muted", isMuted);
@@ -114,7 +108,6 @@ function loadMuteStatus() {
  * @listens window#keydown
  * @param {KeyboardEvent} event - The keydowm event triggered by the user pressing a key
  */
-
 window.addEventListener("keydown", (event) => {
   if (event.code === "ArrowUp") {
     keyboard.UP = true;
@@ -167,7 +160,6 @@ window.addEventListener("keyup", (event) => {
  * - enters fullscreen if no element is currently fullscreen
  * - exits fullscreen if an element is already fullscreen
  */
-
 function fullscreenView() {
   if (!document.fullscreenElement) {
     openFullscreen();
@@ -195,7 +187,6 @@ function openFullscreen() {
 /**
  * Exits the fullscreen
  */
-
 function closeFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -233,7 +224,6 @@ function removeStyleFullscreen() {
 }
 
 /**Listens for changes in fullscreen status updates style */
-
 addEventListener("fullscreenchange", () => {
   if (document.fullscreenElement) {
     styleFullscreen();
@@ -243,16 +233,46 @@ addEventListener("fullscreenchange", () => {
 });
 
 /**
- * Toggled the visibility of the menu overlay ,the button style changes and pauses the world if its exists.
+ * Toggled the visibility of the menu overlay ,changesthe button style and pauses the world if it exists.
  * @param {string} id - id of the menu overlay to toggle
+ * @param {string} btnID - id of the button to toggle
  */
-function toggleControlMenu(id) {
+function toggleOverlay(id, btnID) {
   let elementToShow = document.getElementById(`${id}`);
+  let presstBtn = document.getElementById(`${btnID}`);
+  if (!restartOverlay(id)) return;
+  presstBtn.classList.toggle("aktivBtn");
   elementToShow.classList.toggle("d-none");
-  elementToShow.classList.toggle("d-flex");
-  let btn = document.querySelectorAll(".main-btn");
-  btn[2].classList.toggle("aktivBtn");
+  toggleControlMenu(id);
   if (world) {
     world.pauseOnOpenOverlay();
+  }
+
+  /**
+   * Toggles overlay to display flex if it's the controls-menu
+   * @param {string} id - id of the menu overlay to toggle
+   */
+  function toggleControlMenu(id) {
+    if (id === "controls-menu") {
+      elementToShow.classList.toggle("d-flex");
+    }
+  }
+
+  /**
+   *Checks whether all other overlay elements (expect the given)  are hidden
+   * @param {string} id - The id of the menu overlay to check
+   * @returns {boolean} True if all other overlay elements have the class "d-none"
+   */
+  function restartOverlay(id) {
+    if (id === "overlay-game-restart") {
+      let overlays = Array.from(document.querySelectorAll(".overlay")).filter(
+        (overlay) => overlay.id != id
+      );
+      let allHidden = overlays.every((overlay) =>
+        overlay.classList.contains("d-none")
+      );
+      return allHidden;
+    }
+    return true;
   }
 }
