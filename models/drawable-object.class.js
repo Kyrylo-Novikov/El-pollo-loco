@@ -23,9 +23,9 @@ class DrawableObject {
     bottom: 0,
     right: 0,
   };
-  /** @type { boolean} checks whether the object have to be mirrored horizontally*/
+  /** @type { boolean} Checks whether the object have to be mirrored horizontally*/
   otherDirection = false;
-  /** @type {object} contains the sound objects  for the object*/
+  /** @type {object} Contains the sound objects  for the object*/
   sounds = {};
 
   /**

@@ -6,7 +6,7 @@ class BackgroundObject extends Movableobject {
   height = 480;
 
   /**
-   * Sets the background  and its horizontal position
+   * Sets the background and its horizontal position
    * @constructor
    * @param {string} imagePath - The file path to the background image
    * @param {number} x - Sets the horizontal position

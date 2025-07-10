@@ -1,6 +1,6 @@
-/** Represents all movable objects with with all information from DrawableObjects */
+/** Represents all movable objects with all information from DrawableObjects */
 class Movableobject extends DrawableObject {
-  /** @type {number} Bacis movment speed for every movable objects */
+  /** @type {number} Bacis movement speed for every movable objects */
   speed = 0.25;
   /** @type {number} Vertical speed for jumping, falling , throwing */
   speedY = 0;

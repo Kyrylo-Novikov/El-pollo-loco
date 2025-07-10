@@ -116,12 +116,14 @@ canvas {
 
 .overlay.win {
   background-image: url("img/You won, you lost/You Win A.png");
-  background-color: blue;
+  background-color: black;
+  border: 3px solid rgb(251, 251, 251);
 }
 
 .overlay.game-over {
   background-image: url("img/You won, you lost/Game Over.png");
-  background-color: blue;
+  background-color: black;
+  border: 3px solid rgb(251, 251, 251);
 }
 
 .fullscreens {
