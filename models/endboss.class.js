@@ -12,7 +12,7 @@ class Endboss extends Movableobject {
   speed = 5;
   maxX = 2800;
   minX = 2000;
-  statusBar = new StatusBar(500, 10, "boss", 100);
+  statusBar = new StatusBar(500, 40, "boss", 100);
   bossAnimation;
   ENDBOSS_STATUS = {
     walking: [

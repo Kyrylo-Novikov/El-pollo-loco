@@ -22,9 +22,9 @@ class Character extends Movableobject {
   /** @type {number}  Reference to the animation loop */
   animationsInterval;
   /** @type {number}  Reference to the control loop */
-  controlleInterval;
+  controlInterval;
   /** @type {boolean} True if the jump key is pressed*/
-  isJumpt = false;
+  isJump = false;
   /** @type {boolean} True if the jump already is triggered*/
   jumpTriggered = false;
 
@@ -138,58 +138,42 @@ class Character extends Movableobject {
 
   /**
    * Apply gravity behaviors to the character
-   * Combind vertical movement (applyGravity()) and ground alingnment (groundControll())
+   * Combind vertical movement (applyGravity()) and ground alingnment (groundControl())
    */
   gravityForCharacter() {
     this.applyGravity();
-    this.groundControll();
+    this.groundControl();
   }
 
+  /**
+   * Controls the character input handling and the animation sequenzes.
+   * Starts two intervals, one for movement control and one for animation changes
+   */
   animate() {
-    this.controlleInterval = setInterval(() => {
-      this.movedRightSide();
-      this.moveLeftSide();
-      this.jumping();
-      this.throwTimeStore();
-      this.camOnMoving();
+    this.controlInterval = setInterval(() => {
+      this.movementControl();
     }, 1000 / 30);
-
     this.animationsInterval = setInterval(() => {
-      if (this.isDead()) {
-        this.playSounds("death");
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.isHurt()) {
-        this.playSounds("hurt");
-        this.playAnimation(this.IMAGES_HURT);
-        this.lastMove = new Date().getTime();
-      } else if (this.isJumpt) {
-        this.playAnimation(this.IMAGES_JUMPING);
-        let currentFrame = this.currentImage % this.IMAGES_JUMPING.length;
-        if (!this.jumpTriggered) {
-          this.jump();
-          this.playSounds("jump");
-          this.jumpTriggered = true;
-        }
-        if (currentFrame == this.IMAGES_JUMPING.length - 1) {
-          this.jumpTriggered = false;
-          this.isJumpt = false;
-        }
-        this.lastMove = new Date().getTime();
-      } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        this.playSounds("run");
-        this.lastMove = new Date().getTime();
-        this.playAnimation(this.IMAGES_WALKING);
-      } else if (this.idelLong()) {
-        this.playSounds("snor");
-        this.playAnimation(this.IMAGES_IDLE_LONG);
-      } else {
-        this.playAnimation(this.IMAGES_IDLE);
-        this.stopSound("run");
-        this.stopSound("snor");
-      }
+      this.sequensControl();
     }, 1000 / 12);
   }
 
+  /**
+   * Handles all movement related actions of the character .
+   * @example walk ,jump , throw
+   */
+  movementControl() {
+    this.movedRightSide();
+    this.moveLeftSide();
+    this.jumping();
+    this.throwTimeStore();
+    this.camOnMoving();
+  }
+
+  /**
+   * Moves the character to the right and sets the "otherDirection" flag on false.
+   * Runs only if the right arrow is pressed and the character is not at the end of the level
+   */
   movedRightSide() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.moveRight();
@@ -197,44 +181,159 @@ class Character extends Movableobject {
     }
   }
 
+  /**
+   * Moves the character to the left and sets the "otherDirection" flag on true to mirror the character.
+   * Runs only if the left arrow is pressed and the character's horizontal position (x) is greater than -240.
+   */
   moveLeftSide() {
     if (this.world.keyboard.LEFT && this.x > -240) {
       this.moveLeft();
       this.otherDirection = true;
     }
   }
+
+  /**
+   * Resets the current image index and sets the "isJump" flag on true.
+   * Runs only if space key is pressed and the character is on the ground
+   */
   jumping() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.currentImage = 0;
-      this.isJumpt = true;
+      this.isJump = true;
     }
   }
 
+  /**
+   * Stores the timestamp of last time the D key was pressed
+   */
   throwTimeStore() {
     if (this.world.keyboard.D) {
       this.lastMove = new Date().getTime();
     }
   }
 
+  /**
+   * Checks on the boolean "otherDirection" to change the offset for better view in front of the character
+   * Lerps the camera position smooth towards the target
+   */
   camOnMoving() {
     let camOffset = this.otherDirection ? 420 : 100;
     let viewTarget = -this.x + camOffset;
     this.world.camera_x += (viewTarget - this.world.camera_x) * 0.08;
   }
 
+  /**
+   * Controls the character animation sequences based on its state.
+   */
+  sequensControl() {
+    if (this.isDead()) {
+      this.deathSequence();
+    } else if (this.isHurt()) {
+      this.hurtSequence();
+    } else if (this.isJump) {
+      this.jumpSequence();
+    } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+      this.walkingSequence();
+    } else if (this.idelLong()) {
+      this.sleepSequence();
+    } else {
+      this.idelSequence();
+    }
+  }
+
+  /**
+   * Plays the death animation and sounds.
+   * Called when the character is dies.
+   */
+  deathSequence() {
+    this.playAnimation(this.IMAGES_DEAD);
+    this.playSounds("death");
+  }
+
+  /**
+   * Plays the hurt animation and sounds, and updaters the timestamp for the last move
+   * Called when the character takes damage.
+   */
+  hurtSequence() {
+    this.playSounds("hurt");
+    this.playAnimation(this.IMAGES_HURT);
+    this.lastMove = new Date().getTime();
+  }
+
+  /**
+   *
+   */
+  jumpSequence() {
+    this.playAnimation(this.IMAGES_JUMPING);
+    let currentFrame = this.currentImage % this.IMAGES_JUMPING.length;
+    if (!this.jumpTriggered) {
+      this.jump();
+      this.playSounds("jump");
+      this.jumpTriggered = true;
+    }
+    if (currentFrame == this.IMAGES_JUMPING.length - 1) {
+      this.jumpTriggered = false;
+      this.isJump = false;
+    }
+    this.lastMove = new Date().getTime();
+  }
+
+  /**
+   * Plays the walking animation and sounds
+   * Called when the character moves to the left or right
+   */
+  walkingSequence() {
+    this.playSounds("run");
+    this.lastMove = new Date().getTime();
+    this.playAnimation(this.IMAGES_WALKING);
+  }
+
+  /**
+   * Plays the sleep animation and sounds
+   * Called when the "lastMove" over 10000ms
+   */
+  sleepSequence() {
+    this.playSounds("snor");
+    this.playAnimation(this.IMAGES_IDLE_LONG);
+  }
+
+  /**
+   * Plays the idle animation and stops running and snoring sounds
+   * This is the default animation when the character not moving
+   */
+  idelSequence() {
+    this.playAnimation(this.IMAGES_IDLE);
+    this.stopSound("run");
+    this.stopSound("snor");
+  }
+
+  /**
+   * Subtracts the timestamp , "lastMove", from the current time and return true if the difference over 10000ms
+   * Used to checke if the character  has been idle for to long
+   * @returns {boolean}
+   */
   idelLong() {
     let sinceLastMove = new Date().getTime() - this.lastMove;
     return sinceLastMove > 10000;
   }
 
+  /**
+   *  Stops the game by clearing both animation intervals
+   */
   stopAnimation() {
     clearInterval(this.animationsInterval);
-    clearInterval(this.controlleInterval);
+    clearInterval(this.controlInterval);
   }
 
+  /**
+   * Makes the character jump upwards by setting vertical speed.
+   * Sets the flags "isJump" and "jumpTriggered" to true.
+   * Works only if "jumpTriggered" is false
+   * Used if the character jumps on enemies to bounce again.
+   */
   triggerBounceJump() {
     if (!this.jumpTriggered) {
-      this.isJumpt = true;
+      this.isJump = true;
       this.jumpTriggered = true;
       this.speedY = -20;
     }

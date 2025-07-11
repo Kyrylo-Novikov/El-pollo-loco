@@ -32,7 +32,7 @@ class Movableobject extends DrawableObject {
    * Sets the vertical position to the the ground level and stops vertical movement.
    * If the object below or on the ground.
    */
-  groundControll() {
+  groundControl() {
     setInterval(() => {
       if (this.y >= this.ground) {
         this.y = this.ground;

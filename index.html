@@ -17,25 +17,31 @@
     <div id="game-container" class="game-container">
       <canvas id="canvas" width="720" height="480" class="screen"></canvas>
 
-      <div id="overlay-start" class="overlay start screen">
-        <h>Help Pepe</h>
-        <button onclick="startTheGame()">Start</button>
+      <div id="overlay-start" class="overlay start d-none screen">
+        <!-- <h>Help Pepe</h> -->
+        <button class="init-btn" onclick="startTheGame()">Start</button>
       </div>
       <div id="overlay-game-over" class="overlay game-over d-none screen">
-        <button onclick="startTheGame()">Try Again</button>
-        <button onclick="backToStart()">Back to Menu</button>
+        <button class="init-btn" onclick="restartTheGame()">Try Again</button>
+        <button class="init-btn" onclick="backToStart()">Back to Menu</button>
       </div>
       <div id="overlay-win" class="overlay win d-none screen">
-        <button onclick="startTheGame()">New Game</button>
-        <button onclick="backToStart()">Back to Menu</button>
+        <button class="init-btn" onclick="restartTheGame()">New Game</button>
+        <button class="init-btn" onclick="backToStart()">Back to Menu</button>
       </div>
-      <div id="overlay-game-restart" class="overlay restart d-none screen">
-        <button onclick="startTheGame()">Try Again</button>
-        <button onclick="backToStart()">Back to Menu</button>
+      <div
+        id="overlay-game-restart"
+        class="overlay restart d-none screen direktion-column"
+      >
+        <button class="init-btn" onclick="restartTheGame()">Try Again</button>
+        <button class="init-btn" onclick="backToStart()">Back to Menu</button>
       </div>
-      <div id="info-overlay" class="overlay info d-none screen">
-        <button onclick="">Privacy Policy</button>
-        <button onclick="">Legal Notice</button>
+      <div
+        id="info-overlay"
+        class="overlay info d-none screen direktion-column"
+      >
+        <button class="init-btn" onclick="">Privacy Policy</button>
+        <button class="init-btn" onclick="">Legal Notice</button>
       </div>
       <div id="controls-menu" class="controls overlay d-none screen">
         <div class="explain-btn">
@@ -85,7 +91,7 @@
       <button
         type="button"
         class="main-btn fullscreen-btn"
-        onclick="fullscreenView()"
+        onclick="fullscreenView();this.blur()"
       >
         <img
           src="img/10_other/fullscreen_white.png"
@@ -96,7 +102,7 @@
         type="button"
         id="mute-btn"
         class="main-btn mute-btn"
-        onclick="muteBtn()"
+        onclick="muteBtn();this.blur()"
       >
         <img src="img/10_other/sounds.png" alt="Sound control" />
       </button>
@@ -104,7 +110,7 @@
         type="button"
         class="main-btn control-menu-btn"
         id="control-menu-btn"
-        onclick="toggleOverlay(`controls-menu`,`control-menu-btn`)"
+        onclick="toggleOverlay(`controls-menu`,`control-menu-btn`);this.blur()"
       >
         <img src="img/10_other/control.png" alt="" />
       </button>
@@ -112,7 +118,7 @@
         type="button"
         class="main-btn restart-btn"
         id="restart-btn"
-        onclick="toggleOverlay(`overlay-game-restart`,`restart-btn`)"
+        onclick="toggleOverlay(`overlay-game-restart`,`restart-btn`);this.blur()"
       >
         <img src="img/10_other/restart.png" alt="" />
       </button>
@@ -120,7 +126,7 @@
         type="button"
         class="main-btn info-btn"
         id="info-btn"
-        onclick="toggleOverlay(`info-overlay`,`info-btn`)"
+        onclick="toggleOverlay(`info-overlay`,`info-btn`);this.blur()"
       >
         <img src="img/10_other/info.png" alt="" />
       </button>

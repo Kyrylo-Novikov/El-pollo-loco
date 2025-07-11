@@ -8,6 +8,7 @@ let keyboard = new Keyboard();
 function init() {
   canvas = document.getElementById("canvas");
   initMuteStatus();
+  startOverlay();
 }
 
 /**
@@ -16,25 +17,43 @@ function init() {
  * Then hides overlays and starts the draw and run loops of the world  after a 1 second delay.
  */
 function startTheGame() {
+  restartTheGame();
+  startOverlay();
+}
+
+function restartTheGame() {
   if (world) {
-    world.stopGame();
+    world.canvasAfterGame();
   }
+  resetReloadBtn();
   let level = level1();
   world = new World(canvas, keyboard, level);
   setTimeout(() => {
     hideOverlays();
     world.draw();
     world.run();
-  }, 1000);
+  }, 500);
 }
 
 /**
  * Hides all overlay elements ,then showing the start overlay.
  */
 function backToStart() {
+  resetReloadBtn();
+  world.canvasAfterGame();
   hideOverlays();
+  startOverlay();
+}
+
+function startOverlay() {
   let startOverlay = document.getElementById("overlay-start");
-  startOverlay.classList.remove("d-none");
+  startOverlay.classList.toggle("d-none");
+  startOverlay.classList.toggle("d-flex");
+}
+
+function resetReloadBtn() {
+  let resetBtn = document.getElementById("restart-btn");
+  resetBtn.classList.remove("aktivBtn");
 }
 
 /**
@@ -44,6 +63,7 @@ function hideOverlays() {
   const overlays = document.querySelectorAll(".overlay");
   overlays.forEach((overlay) => {
     overlay.classList.add("d-none");
+    overlay.classList.remove("d-flex");
   });
 }
 
@@ -243,36 +263,35 @@ function toggleOverlay(id, btnID) {
   if (!restartOverlay(id)) return;
   presstBtn.classList.toggle("aktivBtn");
   elementToShow.classList.toggle("d-none");
-  toggleControlMenu(id);
+  elementToShow.classList.toggle("d-flex");
+  // toggleControlMenu(id);
   if (world) {
     world.pauseOnOpenOverlay();
   }
+}
+/**
+ * Toggles overlay to display flex if it's the controls-menu
+ * @param {string} id - id of the menu overlay to toggle
+ */
+// function toggleControlMenu(id) {
+//   if (id === "controls-menu") {
+//   }
+// }
 
-  /**
-   * Toggles overlay to display flex if it's the controls-menu
-   * @param {string} id - id of the menu overlay to toggle
-   */
-  function toggleControlMenu(id) {
-    if (id === "controls-menu") {
-      elementToShow.classList.toggle("d-flex");
-    }
+/**
+ *Checks whether all other overlay elements (expect the given)  are hidden
+ * @param {string} id - The id of the menu overlay to check
+ * @returns {boolean} True if all other overlay elements have the class "d-none"
+ */
+function restartOverlay(id) {
+  if (id === "overlay-game-restart") {
+    let overlays = Array.from(document.querySelectorAll(".overlay")).filter(
+      (overlay) => overlay.id != id
+    );
+    let allHidden = overlays.every((overlay) =>
+      overlay.classList.contains("d-none")
+    );
+    return allHidden;
   }
-
-  /**
-   *Checks whether all other overlay elements (expect the given)  are hidden
-   * @param {string} id - The id of the menu overlay to check
-   * @returns {boolean} True if all other overlay elements have the class "d-none"
-   */
-  function restartOverlay(id) {
-    if (id === "overlay-game-restart") {
-      let overlays = Array.from(document.querySelectorAll(".overlay")).filter(
-        (overlay) => overlay.id != id
-      );
-      let allHidden = overlays.every((overlay) =>
-        overlay.classList.contains("d-none")
-      );
-      return allHidden;
-    }
-    return true;
-  }
+  return true;
 }
