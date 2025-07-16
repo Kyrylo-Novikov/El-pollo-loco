@@ -91,7 +91,9 @@ class ThrowableObject extends Movableobject {
   }
 
   /**
-   *
+   * Clears the interval from "throwAnimation()"".
+   * Resets currentImage , vertical and horizontal speed to 0
+   * Starts the animation for when the bottle hit a enemy
    */
   splash() {
     clearInterval(this.throwInterval);
@@ -102,6 +104,11 @@ class ThrowableObject extends Movableobject {
     this.throwHitAnimation();
   }
 
+  /**
+   * Sets an interval for the hit animation of a thrown object, including sound.
+   * Clears the interval on the last frame of the animation
+   * Marks the bottle as consumed and stop the sound after a short timeout(10ms)
+   */
   throwHitAnimation() {
     let bottleHit = setInterval(() => {
       this.playAnimation(this.IMAGE_BOTTLE_SPLASH);
