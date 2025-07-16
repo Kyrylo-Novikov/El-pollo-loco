@@ -300,7 +300,11 @@ class World {
    * Reduce the bottle count by 20 and updates the bottle status bar.
    */
   checkThrowObject() {
-    if (this.keyboard.D && this.character.bottles > 0) {
+    if (
+      this.keyboard.D &&
+      this.character.bottles > 0 &&
+      !this.character.throwTriggered
+    ) {
       let bottle = new ThrowableObject(
         this.character.x + 30,
         this.character.y + 100,
@@ -308,6 +312,7 @@ class World {
       );
       bottle.world = this;
       this.throwableObject.push(bottle);
+      this.character.throwTriggered = true;
       this.character.bottles -= 20;
       this.statusBar[2].setPercentage(this.character.bottles);
     }

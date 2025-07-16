@@ -27,6 +27,8 @@ class Character extends Movableobject {
   isJump = false;
   /** @type {boolean} True if the jump already is triggered*/
   jumpTriggered = false;
+  /** @type {boolean} True if the throw already is triggered*/
+  throwTriggered = false;
 
   /** @type {string[]} File paths for the walking animation */
   IMAGES_WALKING = [
@@ -210,6 +212,9 @@ class Character extends Movableobject {
     if (this.world.keyboard.D) {
       this.lastMove = new Date().getTime();
     }
+    if (!this.world.keyboard.D) {
+      this.throwTriggered = false;
+    }
   }
 
   /**
@@ -261,7 +266,9 @@ class Character extends Movableobject {
   }
 
   /**
-   *
+   * Plays the jump animation and sounds once at start.
+   * Resets  "jumpTriggered" and "isJump" when the animaion is finishes.
+   * Updates the timestamp "lastMove"
    */
   jumpSequence() {
     this.playAnimation(this.IMAGES_JUMPING);

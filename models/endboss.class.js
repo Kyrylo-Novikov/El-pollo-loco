@@ -14,6 +14,7 @@ class Endboss extends Movableobject {
   minX = 2000;
   statusBar = new StatusBar(500, 40, "boss", 100);
   bossAnimation;
+  showStatusBar = false;
   ENDBOSS_STATUS = {
     walking: [
       "img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -88,12 +89,12 @@ class Endboss extends Movableobject {
         this.playSounds("dead");
         this.currentImage = 0;
       } else if (this.isHurt()) {
-        if (!this.hurtSoundPlayed) {
-          this.playSounds("hurt");
-          this.hurtSoundPlayed = true;
-        }
+        this.speed = 1;
+        this.playSounds("hurt");
+        this.hurtSoundPlayed = true;
       } else {
         this.hurtSoundPlayed = false;
+        this.speed = 5;
       }
       if (Math.abs(this.x - this.world.character.x) < 100) {
         this.walkingStart = false;
@@ -122,12 +123,21 @@ class Endboss extends Movableobject {
       } else if (this.walkingStart) {
         this.playAnimation(this.ENDBOSS_STATUS.walking);
         this.playSounds("walk");
-        this.world.statusBar.push(this.statusBar);
+        if (!this.showStatusBar) {
+          this.world.statusBar.push(this.statusBar);
+          this.showStatusBar = true;
+        }
       } else {
         this.playAnimation(this.ENDBOSS_STATUS.alert);
         if (Math.abs(this.x - this.world.character.x) < 800) {
           this.playSounds("idel");
         }
+      }
+      if (this.showStatusBar && this.energy <= 0) {
+        this.world.statusBar = this.world.statusBar.filter(
+          (bar) => bar !== this.statusBar
+        );
+        return false;
       }
     }, 1000 / 30);
   }
@@ -137,6 +147,7 @@ class Endboss extends Movableobject {
   }
 
   hit() {
+    if (this.canTakeNewHit()) return;
     super.hit();
     if (this.energy <= 0 && !this.dead) {
       this.dead = true;
@@ -146,5 +157,9 @@ class Endboss extends Movableobject {
         );
       }, 1000);
     }
+  }
+
+  canTakeNewHit() {
+    return new Date().getTime() - this.lastHit <= 100;
   }
 }
