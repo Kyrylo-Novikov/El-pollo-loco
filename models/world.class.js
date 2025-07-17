@@ -216,6 +216,9 @@ class World {
         if (throwableObject.isColliding(enemy)) {
           enemy.hit();
           throwableObject.splash();
+          setTimeout(() => {
+            throwableObject.consumed = true;
+          }, 100);
           if (enemy instanceof Endboss) {
             this.statusBar[3].setPercentage(enemy.energy);
           }
@@ -359,7 +362,7 @@ class World {
    @return {void}
    */
   addAllObjectsToMap() {
-    this.addObjectToMap(this.level.backgroundObject);
+    this.addObjectToMap(this.level.backgroundObjects);
     this.addObjectToMap(this.level.collectibles);
     this.addObjectToMap(this.level.clouds);
     this.addObjectToMap(this.level.enemies);

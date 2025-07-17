@@ -5,6 +5,10 @@
  */
 
 class Air extends BackgroundObject {
+  /**
+   * Loads the image and sets the vertical position on 0
+   * @constructor
+   */
   constructor() {
     super().loadImage("img/5_background/layers/air.png");
     this.y = 0;

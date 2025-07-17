@@ -58,6 +58,7 @@ class ThrowableObject extends Movableobject {
     this.width = 68;
     this.otherDirection = direction;
     this.currentImage = 0;
+    this.consumed = false;
     this.throw();
   }
 
@@ -116,10 +117,9 @@ class ThrowableObject extends Movableobject {
       this.playSounds("splash");
       if (this.currentImage >= this.IMAGE_BOTTLE_SPLASH.length - 1) {
         clearInterval(bottleHit);
-        setTimeout(() => {
-          this.consumed = true;
-          this.stopSound("splash");
-        }, 10);
+
+        this.consumed = true;
+        this.stopSound("splash");
       }
     }, 1000 / 30);
   }

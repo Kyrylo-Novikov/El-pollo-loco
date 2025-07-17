@@ -1,3 +1,9 @@
+/** Creats and returns the first level of the game
+ * Contains a predefined set of enemies, clouds, background objects and items.
+ * Used to initialize gameplay elements when level 1 starts.
+ * @returns A Level instance with all objects needed for Level 1.
+ */
+
 function level1() {
   return new Level(
     [

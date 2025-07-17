@@ -45,12 +45,18 @@ function backToStart() {
   startOverlay();
 }
 
+/**
+ * Toggles the vidibility of the start overlay
+ */
 function startOverlay() {
   let startOverlay = document.getElementById("overlay-start");
   startOverlay.classList.toggle("d-none");
   startOverlay.classList.toggle("d-flex");
 }
 
+/**
+ * Removes the "aktivBtn" class from restart-btn.
+ */
 function resetReloadBtn() {
   let resetBtn = document.getElementById("restart-btn");
   resetBtn.classList.remove("aktivBtn");

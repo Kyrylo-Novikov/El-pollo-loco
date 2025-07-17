@@ -239,10 +239,10 @@ class Character extends Movableobject {
       this.jumpSequence();
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.walkingSequence();
-    } else if (this.idelLong()) {
+    } else if (this.idleLong()) {
       this.sleepSequence();
     } else {
-      this.idelSequence();
+      this.idleSequence();
     }
   }
 
@@ -308,7 +308,7 @@ class Character extends Movableobject {
    * Plays the idle animation and stops running and snoring sounds
    * This is the default animation when the character not moving
    */
-  idelSequence() {
+  idleSequence() {
     this.playAnimation(this.IMAGES_IDLE);
     this.stopSound("run");
     this.stopSound("snor");
@@ -319,7 +319,7 @@ class Character extends Movableobject {
    * Used to checke if the character  has been idle for to long
    * @returns {boolean}
    */
-  idelLong() {
+  idleLong() {
     let sinceLastMove = new Date().getTime() - this.lastMove;
     return sinceLastMove > 10000;
   }

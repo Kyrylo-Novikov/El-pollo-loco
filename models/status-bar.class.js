@@ -1,4 +1,11 @@
+/**
+ * Represents the StatusBar that iherents all propertys and methods from DrawableObject
+ */
+
 class StatusBar extends DrawableObject {
+  /**
+   * @type {{[key:string]: string[]}} Arrays with file paths for differente status bars based on state/type
+   */
   STATUS_BARS = {
     health: [
       "img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
@@ -33,11 +40,15 @@ class StatusBar extends DrawableObject {
       "img/7_statusbars/2_statusbar_endboss/blue/blue100.png",
     ],
   };
-  x;
-  y;
-  imgArray;
-  percentage = 100;
 
+  /**
+   * Creates a StatusBar object based on its type (health, coin, bottle, boss)
+   * @param {number} x - Horizontal positon in pixels (x)
+   * @param {number} y - Vertical positon in pixels (y)
+   * @param {'health'|'coin'|'bottle'|'boss'} typ - Type of the status bar , used to select the correct file pahts
+   * @param {number} startValue - Initial value of the status bar (0 - 100)
+   * @constructor
+   */
   constructor(x, y, typ, startValue) {
     super();
     this.imgArray = this.STATUS_BARS[typ];
@@ -50,16 +61,19 @@ class StatusBar extends DrawableObject {
   }
 
   /**
-   * anhaltspunk gestern(07.06.2025)
-   * @param {*} percentage
+   * Selects the correct image for the current percentage
+   * @param {number} percentage - A value (0 - 100 ) for calculating the correct index to select the right path
    */
-
-  // setPercentage(50)
   setPercentage(percentage) {
-    this.percentage = percentage; // => 0 .....5
+    this.percentage = percentage;
     let path = this.imgArray[this.imageIndex()];
     this.img = this.imageCache[path];
   }
+
+  /**
+   * Determines the correct image (0 - 5) based on the current percentage.
+   * @returns Index for the correct frame
+   */
   imageIndex() {
     if (this.percentage == 100) {
       return 5;
