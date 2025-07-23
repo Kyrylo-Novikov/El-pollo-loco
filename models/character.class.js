@@ -161,7 +161,7 @@ class Character extends Movableobject {
   }
 
   /**
-   * Handles all movement related actions of the character .
+   * Handles all movement related actions of the character and the cam movement .
    * @example walk ,jump , throw
    */
   movementControl() {
@@ -225,6 +225,9 @@ class Character extends Movableobject {
     let camOffset = this.otherDirection ? 420 : 100;
     let viewTarget = -this.x + camOffset;
     this.world.camera_x += (viewTarget - this.world.camera_x) * 0.08;
+    if (this.world.camera_x <= -6000) {
+      this.world.camera_x = -6000;
+    }
   }
 
   /**

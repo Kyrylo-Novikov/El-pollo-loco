@@ -2,7 +2,10 @@
 <html translate="no" lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>El pollo loco</title>
     <link rel="stylesheet" href="style.css" />
     <link
@@ -18,22 +21,29 @@
       <canvas id="canvas" width="720" height="480" class="screen"></canvas>
 
       <div id="overlay-start" class="overlay start d-none screen">
-        <!-- <h>Help Pepe</h> -->
         <button class="init-btn" onclick="startTheGame()">Start</button>
       </div>
       <div id="overlay-game-over" class="overlay game-over d-none screen">
-        <button class="init-btn" onclick="restartTheGame()">Try Again</button>
-        <button class="init-btn" onclick="backToStart()">Back to Menu</button>
+        <button class="init-btn end-btn left" onclick="restartTheGame()">
+          Try Again
+        </button>
+        <button class="init-btn end-btn right" onclick="backToStart()">
+          Back to Menu
+        </button>
       </div>
       <div id="overlay-win" class="overlay win d-none screen">
-        <button class="init-btn" onclick="restartTheGame()">New Game</button>
-        <button class="init-btn" onclick="backToStart()">Back to Menu</button>
+        <button class="init-btn end-btn left" onclick="restartTheGame()">
+          New Game
+        </button>
+        <button class="init-btn end-btn right" onclick="backToStart()">
+          Back to Menu
+        </button>
       </div>
       <div
         id="overlay-game-restart"
         class="overlay restart d-none screen direktion-column"
       >
-        <button class="init-btn" onclick="restartTheGame()">Try Again</button>
+        <button class="init-btn" onclick="restartTheGame()">Restart</button>
         <button class="init-btn" onclick="backToStart()">Back to Menu</button>
       </div>
       <div
@@ -41,12 +51,14 @@
         class="overlay info d-none screen direktion-column"
       >
         <button class="init-btn" onclick="">Privacy Policy</button>
+        <div class="overlay-privacy d-none" id="privacy"></div>
         <button class="init-btn" onclick="">Legal Notice</button>
+        <div class="overlay-legal-notice d-none" id="legal-notice"></div>
       </div>
       <div id="controls-menu" class="controls overlay d-none screen">
         <div class="explain-btn">
           <img
-            src="/img/explanation/walk.png"
+            src="./img/explanation/walk.png"
             alt=""
             class="game-instructions"
           />
@@ -57,12 +69,11 @@
             <span>RIGHT</span>
             arrow key to
             <span>move</span>
-            in this direction
           </div>
         </div>
         <div class="explain-btn">
           <img
-            src="/img/explanation/on-jump.png"
+            src="./img/explanation/on-jump.png"
             alt=""
             class="game-instructions"
           />
@@ -75,7 +86,7 @@
         </div>
         <div class="explain-btn">
           <img
-            src="/img/explanation/throw.png"
+            src="./img/explanation/throw.png"
             alt=""
             class="game-instructions"
           />
@@ -130,25 +141,67 @@
       >
         <img src="img/10_other/info.png" alt="" />
       </button>
+      <div class="mobile-overlay">
+        <div class="left-hand-btn">
+          <button
+            id="btn-left"
+            class="control-btn left"
+            ontouchstart="listerBtnTrue('LEFT')"
+            ontouchend="listerBtnFalse('LEFT')"
+          >
+            &larr;
+          </button>
+          <button
+            id="btn-right"
+            class="control-btn right"
+            ontouchstart="listerBtnTrue('RIGHT')"
+            ontouchend="listerBtnFalse('RIGHT')"
+          >
+            &rarr;
+          </button>
+        </div>
+        <div class="right-hand-btn">
+          <button
+            id="btn-throw"
+            class="control-btn throw"
+            ontouchstart="listerBtnTrue('D')"
+            ontouchend="listerBtnFalse('D')"
+          >
+            ⚔
+          </button>
+          <button
+            id="btn-up"
+            class="control-btn up"
+            ontouchstart="listerBtnTrue('SPACE')"
+            ontouchend="listerBtnFalse('SPACE')"
+          >
+            &#8679;
+          </button>
+        </div>
+      </div>
     </div>
+    <img
+      src="img/explanation/rotate_your_divice .png"
+      alt=""
+      class="device-instruction"
+    />
 
-    <script src="/models/drawable-object.class.js"></script>
+    <script src="./models/drawable-object.class.js"></script>
 
-    <script src="/models/status-bar.class.js"></script>
-    <script src="/models/collectibles.class.js"></script>
-    <script src="/models/world.class.js"></script>
-    <script src="/models/movable-object.class.js"></script>
-    <script src="/models/throwable-object.class.js"></script>
-    <script src="/models/background-object.class.js"></script>
-    <script src="/models/character.class.js"></script>
-    <script src="/models/chicken.class.js"></script>
-    <script src="/models/smallChicken.class.js"></script>
-    <script src="/models/endboss.class.js"></script>
-    <script src="/models/cloud.class.js"></script>
-    <script src="/models/keyboard.class.js"></script>
-    <script src="/models/level.class.js"></script>
-
-    <script src="/levels/level1.js"></script>
-    <script src="/js/game.js"></script>
+    <script src="./models/status-bar.class.js"></script>
+    <script src="./models/collectibles.class.js"></script>
+    <script src="./models/world.class.js"></script>
+    <script src="./models/movable-object.class.js"></script>
+    <script src="./models/throwable-object.class.js"></script>
+    <script src="./models/background-object.class.js"></script>
+    <script src="./models/character.class.js"></script>
+    <script src="./models/chicken.class.js"></script>
+    <script src="./models/smallChicken.class.js"></script>
+    <script src="./models/endboss.class.js"></script>
+    <script src="./models/cloud.class.js"></script>
+    <script src="./models/keyboard.class.js"></script>
+    <script src="./models/level.class.js"></script>
+    <script src="./levels/level1.js"></script>
+    <script src="./js/game.js"></script>
   </body>
 </html>

@@ -32,7 +32,7 @@ function restartTheGame() {
     hideOverlays();
     world.draw();
     world.run();
-  }, 500);
+  }, 300);
 }
 
 /**
@@ -136,7 +136,7 @@ function loadMuteStatus() {
  */
 window.addEventListener("keydown", (event) => {
   if (event.code === "ArrowUp") {
-    keyboard.UP = true;
+    keyboard.SPACE = true;
   }
   if (event.code === "ArrowDown") {
     keyboard.DOWN = true;
@@ -156,13 +156,29 @@ window.addEventListener("keydown", (event) => {
 });
 
 /**
+ * Sets given key in the keyboard object to true
+ * @param {string} key - The key to set as pressed
+ */
+function listerBtnTrue(key) {
+  keyboard[key] = true;
+}
+
+/**
+ * Sets given key in the keyboard object to false
+ * * @param {string} key The key to set as released.
+ */
+function listerBtnFalse(key) {
+  keyboard[key] = false;
+}
+
+/**
  * Listen on realeased keys on the window and sets the key flag to false.
  * @listens window#keyup
  * @param {KeyboardEvent} event - The keyup event triggered by the user released a key
  */
 window.addEventListener("keyup", (event) => {
   if (event.code === "ArrowUp") {
-    keyboard.UP = false;
+    keyboard.SPACE = false;
   }
   if (event.code === "ArrowDown") {
     keyboard.DOWN = false;

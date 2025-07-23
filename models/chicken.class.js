@@ -25,7 +25,8 @@ class Chicken extends Movableobject {
   };
 
   /** @type {number} Randomized movement speed for the chicken (minimum 3)*/
-  speed = Math.max(10 * Math.random(), 3);
+  speed = Math.max(10 * Math.random(), 4);
+
   offset = {
     top: 10,
     left: 10,
@@ -42,11 +43,11 @@ class Chicken extends Movableobject {
    * Initializes the animation and sets the "dead" flag on false
    * @constructor
    */
-  constructor() {
+  constructor(x) {
     super();
     this.loadImage(this.IMAGE_DEAD);
     this.loadImages(this.IMAGES_WALKING);
-    this.x = 300 + Math.random() * 1500;
+    this.x = x;
     this.speed;
     this.animate();
     this.dead = false;

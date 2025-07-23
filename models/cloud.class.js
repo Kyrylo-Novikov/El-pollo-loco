@@ -16,7 +16,7 @@ class Cloud extends Movableobject {
    * @param {number} x - The initial horizontal position of the cloud (x)
    */
   constructor(x) {
-    super().loadImage("../img/5_background/layers/4_clouds/1.png");
+    super().loadImage("./img/5_background/layers/4_clouds/1.png");
     this.x = x;
     this.animate();
   }

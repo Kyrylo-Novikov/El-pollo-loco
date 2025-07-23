@@ -21,7 +21,7 @@ class Level {
   /**
    * @type {number} Horizontal pixels position where the level ends
    */
-  level_end_x = 6500;
+  level_end_x = 6800;
 
   /**
    * Creates a level with all its components

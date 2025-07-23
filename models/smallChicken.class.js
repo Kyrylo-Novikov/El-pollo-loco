@@ -33,8 +33,9 @@ class SmallChicken extends Chicken {
   /** @type {number} Vertical Position in pixels */
   y = 350;
 
-  constructor() {
+  constructor(x) {
     super(), this.loadImage(this.IMAGE_DEAD);
     this.loadImages(this.IMAGES_WALKING);
+    this.x = x;
   }
 }

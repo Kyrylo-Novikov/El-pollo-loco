@@ -4,11 +4,11 @@
 
 class Endboss extends Movableobject {
   /** @type {number} Vertical position in pixels */
-  y = 0;
+  y = 90;
   /** @type {number} Height of the Endboss  */
-  height = 450;
+  height = 360;
   /** @type {number} Width of the Endboss  */
-  width = 280;
+  width = 240;
   /** Sets the offset for the hitbox*/
   offset = {
     top: 100,
@@ -99,7 +99,7 @@ class Endboss extends Movableobject {
     this.attackStart = false;
     this.hurtStart = false;
     this.deadStart = false;
-    this.x = 2500;
+    this.x = 6400;
     this.animate();
   }
 
@@ -149,7 +149,7 @@ class Endboss extends Movableobject {
    */
   alertAnimation() {
     this.playAnimation(this.ENDBOSS_STATUS.alert);
-    if (Math.abs(this.x - this.world.character.x) < 800) {
+    if (Math.abs(this.x - this.world.character.x) < 840) {
       this.playSounds("alert");
     }
   }
@@ -175,7 +175,7 @@ class Endboss extends Movableobject {
     this.playAnimation(this.ENDBOSS_STATUS.dead);
     if (this.currentImage >= this.ENDBOSS_STATUS.dead.length - 1) {
       clearInterval(this.bossAnimation);
-      this.y = 120;
+      this.y = 200;
     }
   }
 
@@ -190,7 +190,7 @@ class Endboss extends Movableobject {
     }
     if (Math.abs(this.x - this.world.character.x) < 100) {
       this.attackBehaviorAndFlags();
-    } else if (Math.abs(this.x - this.world.character.x) < 500) {
+    } else if (Math.abs(this.x - this.world.character.x) < 400) {
       this.huntBehaviorAndFlags();
     } else {
       this.alertFlags();

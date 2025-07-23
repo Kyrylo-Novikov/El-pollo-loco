@@ -96,7 +96,7 @@ class World {
     if (this.character.isDead()) {
       this.gameBehaviorOnDead();
     }
-    if (this.character.x >= 6500) {
+    if (this.character.x >= 6800) {
       this.gameBehaviorOnWin();
     }
   }
@@ -390,7 +390,7 @@ class World {
       this.flipImage(movableObject);
     }
     movableObject.draw(this.ctx);
-    movableObject.drawFrame(this.ctx);
+    // movableObject.drawFrame(this.ctx);
     this.ctx.stroke();
     if (movableObject.otherDirection) {
       this.flipImageBack(movableObject);
