@@ -20,7 +20,7 @@ class World {
   statusBar = [
     new StatusBar(10, 0, "health", 100),
     new StatusBar(10, 40, "coin", 0),
-    new StatusBar(10, 80, "bottle", 100),
+    new StatusBar(10, 80, "bottle", 60),
   ];
 
   /**@type {Object[]} An Array of throwable object (bottles)*/

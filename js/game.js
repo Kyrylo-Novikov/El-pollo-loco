@@ -30,9 +30,11 @@ function restartTheGame() {
   world = new World(canvas, keyboard, level);
   setTimeout(() => {
     hideOverlays();
+  }, 300);
+  setTimeout(() => {
     world.draw();
     world.run();
-  }, 300);
+  }, 500);
 }
 
 /**
@@ -246,7 +248,7 @@ function closeFullscreen() {
  */
 function styleFullscreen() {
   let btn = document.querySelectorAll(".main-btn");
-  btn[0].classList.add("aktivBtn");
+  btn[4].classList.add("aktivBtn");
   let screens = document.querySelectorAll(".screen");
   screens.forEach((screnn) => {
     screnn.classList.add("fullscreens");
@@ -258,7 +260,7 @@ function styleFullscreen() {
  */
 function removeStyleFullscreen() {
   let btn = document.querySelectorAll(".main-btn");
-  btn[0].classList.remove("aktivBtn");
+  btn[4].classList.remove("aktivBtn");
   let screens = document.querySelectorAll(".screen");
   screens.forEach((screnn) => {
     screnn.classList.remove("fullscreens");
@@ -316,4 +318,17 @@ function restartOverlay(id) {
     return allHidden;
   }
   return true;
+}
+
+/**
+ * Toggles the visibility of a given overlay and button.
+ * @param {string} id - The ID of the overlay to show or hide
+ * @param {string} idbtn - The ID of the button to show or hide
+ */
+
+function toggleDnone(id, idbtn) {
+  let overlay = document.getElementById(id);
+  let otherBtn = document.getElementById(idbtn);
+  overlay.classList.toggle("d-none");
+  otherBtn.classList.toggle("d-none");
 }

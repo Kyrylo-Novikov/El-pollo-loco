@@ -14,7 +14,7 @@ class Character extends Movableobject {
   /** @type {number} Movement speed for the character */
   speed = 14;
   /** @type {number} Count of bottles collected and for throwing */
-  bottles = 100;
+  bottles = 60;
   /** @type {number} Count of coins collected */
   coin = 0;
   /** @type {number} Timestamp of the character's last move */

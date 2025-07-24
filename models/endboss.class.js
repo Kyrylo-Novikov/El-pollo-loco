@@ -23,7 +23,7 @@ class Endboss extends Movableobject {
   // maxX = 2800;
   // minX = 2000;
   /** @type {Object} Status bar for the boss*/
-  statusBar = new StatusBar(500, 40, "boss", 100);
+  statusBar = new StatusBar(500, 10, "boss", 100);
   /**Interval ID used to control the end boss animation and behavior */
   bossAnimation;
   /** @type {boolean} Set to true to display the boss status bar */

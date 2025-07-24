@@ -156,7 +156,7 @@ class Movableobject extends DrawableObject {
    */
   collect(collectable) {
     if (collectable.type == "coin" && this.coin < 100) {
-      this.coin += 20;
+      this.coin += 2.5;
     }
     if (collectable.type == "bottle" && this.bottles < 100) {
       this.bottles += 20;
