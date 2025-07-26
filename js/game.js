@@ -21,20 +21,38 @@ function startTheGame() {
   startOverlay();
 }
 
+/**
+ * Restarts the game world with level, keyboard and canvas.
+ * If a game already exists reset the UI.
+ * Creates a level and assigns it to the world.
+ * Draws the world
+ * After a short delay starts the game.
+ */
 function restartTheGame() {
-  if (world) {
-    world.canvasAfterGame();
-  }
-  resetReloadBtn();
+  if (world) this.resetUI();
   let level = level1();
   world = new World(canvas, keyboard, level);
+
+  this.startDelay();
+}
+
+/**
+ * Start the game world and hides all overlays with a 300ms delay
+ */
+function startDelay() {
+  world.draw();
   setTimeout(() => {
+    world.run();
     hideOverlays();
   }, 300);
-  setTimeout(() => {
-    world.draw();
-    world.run();
-  }, 500);
+}
+
+/**
+ * Resetes the UI to its default style after restarting the game
+ */
+function resetUI() {
+  world.canvasAfterGame();
+  resetReloadBtn();
 }
 
 /**
@@ -87,12 +105,7 @@ function muteBtn() {
   if (world) {
     world.isMuted = isMuted;
     world.backgroundMusicManager();
-    if (!isMuted) {
-      world.backgroundMusic.play();
-    }
-    if (isMuted) {
-      world.stopAllSounds();
-    }
+    !isMuted ? world.backgroundMusic.play() : world.stopAllSounds();
   }
 }
 
@@ -325,10 +338,13 @@ function restartOverlay(id) {
  * @param {string} id - The ID of the overlay to show or hide
  * @param {string} idbtn - The ID of the button to show or hide
  */
-
 function toggleDnone(id, idbtn) {
   let overlay = document.getElementById(id);
   let otherBtn = document.getElementById(idbtn);
   overlay.classList.toggle("d-none");
   otherBtn.classList.toggle("d-none");
 }
+
+document.body.addEventListener("contextmenu", (event) =>
+  event.preventDefault()
+);

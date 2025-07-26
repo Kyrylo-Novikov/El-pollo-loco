@@ -19,6 +19,8 @@ class Character extends Movableobject {
   coin = 0;
   /** @type {number} Timestamp of the character's last move */
   lastMove = 0;
+  /** @type {number} Timestamp of the character's last throw */
+  lastThrow = 0;
   /** @type {number}  Reference to the animation loop */
   animationsInterval;
   /** @type {number}  Reference to the control loop */
@@ -27,8 +29,7 @@ class Character extends Movableobject {
   isJump = false;
   /** @type {boolean} True if the jump already is triggered*/
   jumpTriggered = false;
-  /** @type {boolean} True if the throw already is triggered*/
-  throwTriggered = false;
+  // /** @type {boolean} True if the throw already is triggered*/
 
   /** @type {string[]} File paths for the walking animation */
   IMAGES_WALKING = [
@@ -168,7 +169,6 @@ class Character extends Movableobject {
     this.movedRightSide();
     this.moveLeftSide();
     this.jumping();
-    this.throwTimeStore();
     this.camOnMoving();
   }
 
@@ -202,18 +202,6 @@ class Character extends Movableobject {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.currentImage = 0;
       this.isJump = true;
-    }
-  }
-
-  /**
-   * Stores the timestamp of last time the D key was pressed
-   */
-  throwTimeStore() {
-    if (this.world.keyboard.D) {
-      this.lastMove = new Date().getTime();
-    }
-    if (!this.world.keyboard.D) {
-      this.throwTriggered = false;
     }
   }
 

@@ -7,9 +7,9 @@
 function level1() {
   return new Level(
     [
-      new Chicken(400 + Math.random() * 1500),
-      new Chicken(500 + Math.random() * 1500),
-      new Chicken(600 + Math.random() * 1500),
+      new Chicken(700 + Math.random() * 1500),
+      new Chicken(800 + Math.random() * 1500),
+      new Chicken(1400 + Math.random() * 1500),
       new Chicken(2500 + Math.random() * 1500),
       new Chicken(3100 + Math.random() * 1500),
       new Chicken(3700 + Math.random() * 1500),
@@ -18,14 +18,12 @@ function level1() {
       new SmallChicken(1500 + Math.random() * 1500),
       new SmallChicken(2600 + Math.random() * 1500),
       new SmallChicken(2000 + Math.random() * 1500),
-
       new Chicken(4000 + Math.random() * 1500),
       new Chicken(5000 + Math.random() * 1500),
       new Chicken(6000 + Math.random() * 1500),
-      new Chicken(4500 + Math.random() * 1500),
-      new Chicken(5100 + Math.random() * 1500),
-      new Chicken(4700 + Math.random() * 1500),
-
+      new Chicken(4600 + Math.random() * 1500),
+      new Chicken(5200 + Math.random() * 1500),
+      new Chicken(4800 + Math.random() * 1500),
       new SmallChicken(6000 + Math.random() * 1500),
       new SmallChicken(6200 + Math.random() * 1500),
       new SmallChicken(6300 + Math.random() * 1500),

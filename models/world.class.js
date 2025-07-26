@@ -22,7 +22,6 @@ class World {
     new StatusBar(10, 40, "coin", 0),
     new StatusBar(10, 80, "bottle", 60),
   ];
-
   /**@type {Object[]} An Array of throwable object (bottles)*/
   throwableObject = [];
   /** @type {number} the interval ID used inside the run() function*/
@@ -50,21 +49,14 @@ class World {
     this.isMuted = loadMuteStatus();
     this.statusBar;
     this.backgroundMusicManager();
-    // this.draw();
     this.setWorld();
-    this.setWorldEnemy();
   }
 
   /**
    * Plays the background music if not muted otherwise paused the background music
-   * @returns {void}
    */
   backgroundMusicManager() {
-    if (this.isMuted) {
-      this.backgroundMusic.pause();
-      return;
-    }
-    this.backgroundMusic.play();
+    this.isMuted ? this.backgroundMusic.pause() : this.backgroundMusic.play();
   }
 
   /**
@@ -74,19 +66,25 @@ class World {
   run() {
     this.gameloop = setInterval(() => {
       if (this.paused) {
-        this.pause();
-        return;
+        return this.pause();
       }
-      this.checkCollecting();
-      let hasJumpAttackHit = this.jumpAttackCollision();
-      if (!hasJumpAttackHit) {
-        this.checkCollisions();
-      }
-      this.checkThrowObject();
-      this.checkHitting();
-      this.removeTheowableObjects();
-      this.endConditions();
+      this.handleGAmeLogic();
     }, 1000 / 20);
+  }
+
+  /**
+   * Checks collisions, hits, throwableObjects and the end conditions
+   */
+  handleGAmeLogic() {
+    this.checkCollecting();
+    let hasJumpAttackHit = this.jumpAttackCollision();
+    if (!hasJumpAttackHit) {
+      this.checkCollisions();
+    }
+    this.checkThrowObject();
+    this.checkHitting();
+    this.removeTheowableObjects();
+    this.endConditions();
   }
 
   /**
@@ -94,11 +92,21 @@ class World {
    */
   endConditions() {
     if (this.character.isDead()) {
-      this.gameBehaviorOnDead();
+      setTimeout(() => {
+        this.gameBehaviorOnEnd("overlay-game-over", "lose");
+      }, 400);
     }
-    if (this.character.x >= 6800) {
-      this.gameBehaviorOnWin();
-    }
+    if (this.character.x >= 6800) this.gameBehaviorOnEnd("overlay-win", "win");
+  }
+
+  /**
+   * Stops the game, draws the canvas black , shows the given overlay and plays the given sound
+   */
+  gameBehaviorOnEnd(overlay, sound) {
+    this.canvasAfterGame();
+    let endScreen = document.getElementById(overlay);
+    endScreen.classList.remove("d-none");
+    this.character.playSounds(sound);
   }
 
   /**
@@ -112,26 +120,6 @@ class World {
   }
 
   /**
-   * Stops the game, draws the canvas black , shows the game-over overlay and plays the lose sound
-   */
-  gameBehaviorOnDead() {
-    this.canvasAfterGame();
-    let gameOver = document.getElementById("overlay-game-over");
-    gameOver.classList.remove("d-none");
-    this.character.playSounds("lose");
-  }
-
-  /**
-   * Stops the game, draws the canvas black , shows the win overlay and plays the win sound
-   */
-  gameBehaviorOnWin() {
-    this.canvasAfterGame();
-    let gameWin = document.getElementById("overlay-win");
-    gameWin.classList.remove("d-none");
-    this.character.playSounds("win");
-  }
-
-  /**
    * Paused the game if any overlay are visible otherweise resume the game
    */
   pauseOnOpenOverlay() {
@@ -139,11 +127,7 @@ class World {
     let visibleOverlay = overlays.some(
       (overlay) => !overlay.classList.contains("d-none")
     );
-    if (visibleOverlay) {
-      this.pause();
-    } else {
-      this.resume();
-    }
+    visibleOverlay ? this.pause() : this.resume();
   }
 
   /**
@@ -232,7 +216,6 @@ class World {
    * If yes,the enemy takes a hit and the character trigger a bounce jump.
    * @returns {boolean} True if the bounce hit occurred, otherwise false
    */
-
   jumpAttackCollision() {
     let bounceHit = false;
     this.level.enemies.forEach((enemy) => {
@@ -247,7 +230,7 @@ class World {
   }
 
   /**
-   * Removes thrown throwable object that habe been consumed/used
+   * Removes thrown throwable object that have been consumed/used
    */
   removeTheowableObjects() {
     this.throwableObject = this.throwableObject.filter(
@@ -300,52 +283,49 @@ class World {
 
   /**
    * Creates a new ThrowableObject if "D" is pressed and the charackter have more than 0 bottles.
-   * Reduce the bottle count by 20 and updates the bottle status bar.
    */
   checkThrowObject() {
+    let now = new Date().getTime();
+    let timeSinceThrow = now - this.character.lastThrow;
     if (
       this.keyboard.D &&
       this.character.bottles > 0 &&
-      !this.character.throwTriggered
+      timeSinceThrow > 1000
     ) {
-      let bottle = new ThrowableObject(
-        this.character.x + 30,
-        this.character.y + 100,
-        this.character.otherDirection
-      );
-      bottle.world = this;
-      this.throwableObject.push(bottle);
-      this.character.throwTriggered = true;
-      this.character.bottles -= 20;
-      this.statusBar[2].setPercentage(this.character.bottles);
+      this.configOfBottle();
+      this.character.lastThrow = now;
     }
   }
 
   /**
-   * Gives the character a reference to the current world
+   * Creates a throwable object with vertical and horizontal position, and updates UI and  bottles count
    */
-  setWorld() {
-    this.character.world = this;
+  configOfBottle() {
+    let bottle = new ThrowableObject(
+      this.character.x + 30,
+      this.character.y + 100,
+      this.character.otherDirection
+    );
+    bottle.world = this;
+    this.throwableObject.push(bottle);
+    this.character.bottles -= 20;
+    this.statusBar[2].setPercentage(this.character.bottles);
   }
 
   /**
-   * Gives every enemy a reference to the current world
+   * Gives the character and every enemy a reference to the current world
    */
-  setWorldEnemy() {
-    this.level.enemies.forEach((enemy) => {
-      enemy.world = this;
-    });
+  setWorld() {
+    this.character.world = this;
+    this.level.enemies.forEach((enemy) => (enemy.world = this));
   }
 
   /**
    * Draws the game world with all objects, background, clouds, collectibles, enemies, the character, throwable objects and all status bars on the canvas.
    * Round about 60 times per second.
-   * @returns {void}
    */
   draw() {
-    if (!this.gameRunning) {
-      return;
-    }
+    if (!this.gameRunning) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addAllObjectsToMap();
@@ -359,7 +339,6 @@ class World {
 
   /**
    *Rendered all movable objects,background ,clouds, collectibles, throwable objects and enemies
-   @return {void}
    */
   addAllObjectsToMap() {
     this.addObjectToMap(this.level.backgroundObjects);
